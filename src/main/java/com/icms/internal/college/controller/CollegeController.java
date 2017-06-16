@@ -1,6 +1,7 @@
 package com.icms.internal.college.controller;
 
 import com.icms.internal.college.model.CollegeInfoForm;
+import com.icms.internal.college.repository.CollegeRepository;
 import com.icms.internal.college.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,6 @@ public class CollegeController
     {
         this.collegeService = collegeService;
     }
-
 
     @PostMapping("/Add")
     public boolean addNewCollege(CollegeInfoForm collegeInfoForm) throws SQLException

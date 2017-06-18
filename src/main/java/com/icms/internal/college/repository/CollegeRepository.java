@@ -1,19 +1,20 @@
 package com.icms.internal.college.repository;
 
 import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.college.model.CollegeInfo;
 import com.icms.internal.college.model.CollegeInfoForm;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -39,18 +40,21 @@ public class CollegeRepository
     public boolean addNewCollege(CollegeInfoForm collegeInfoForm) throws SQLException
     {
 
-        String sql = "INSERT INTO CollCollgeInfo (College_Name, College_Address, College_Country, College_City College_PhoneNumber, College_Email, College_TpoName, College_TpoPhoneNumber, College_TpoEmailAddress) values (?,?,?,?,?,?,?,?,?)";
+        System.out.println(collegeInfoForm);
+
+        String sql = "INSERT INTO CollgeInfo values (?,?,?,?,?,?,?,?,?,?)";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.setString(1,collegeInfoForm.getCollegeName());
-        this.preparedStatement.setString(2,collegeInfoForm.getCollegeAddress());
-        this.preparedStatement.setString(3,collegeInfoForm.getCollegeCountry());
-        this.preparedStatement.setString(4,collegeInfoForm.getCollegeCity());
-        this.preparedStatement.setInt(5,collegeInfoForm.getCollegePhoneNumber());
-        this.preparedStatement.setString(6,collegeInfoForm.getCollegeEmail());
-        this.preparedStatement.setString(7,collegeInfoForm.getTpoName());
-        this.preparedStatement.setInt(8,collegeInfoForm.getTpoPhoneNumber());
-        this.preparedStatement.setString(9,collegeInfoForm.getTpoEmail());
+        this.preparedStatement.setInt(2,collegeInfoForm.getCollegeTier());
+        this.preparedStatement.setString(3,collegeInfoForm.getCollegeAddress());
+        this.preparedStatement.setString(4,collegeInfoForm.getCollegeCountry());
+        this.preparedStatement.setString(5,collegeInfoForm.getCollegeCity());
+        this.preparedStatement.setString(6,collegeInfoForm.getCollegePhoneNumber());
+        this.preparedStatement.setString(7,collegeInfoForm.getCollegeEmail());
+        this.preparedStatement.setString(8,collegeInfoForm.getTpoName());
+        this.preparedStatement.setString(9,collegeInfoForm.getTpoPhoneNumber());
+        this.preparedStatement.setString(10,collegeInfoForm.getTpoEmail());
 
         return preparedStatement.executeUpdate() > 0;
     }
@@ -66,7 +70,7 @@ public class CollegeRepository
 //        try
 //        {
 //            Object object = parser
-//                    .parse(new FileReader("E:\\countriesToCities.json"));
+//                    .parse(new FileReader("d:\\countriesToCities.json"));
 //
 //            //convert Object to JSONObject
 //            JSONObject jsonObject = (JSONObject)object;
@@ -85,6 +89,9 @@ public class CollegeRepository
 //
 //            for (String country : countriesList){
 //                JSONArray cities = (JSONArray) jsonObject.get(country);
+//
+//                Collections.sort(cities);
+//
 //                for(Object city : cities){
 //
 //                    String countrName = new String(country);
@@ -112,5 +119,35 @@ public class CollegeRepository
 //        }
     }
 
+    public List<CollegeInfo> getAllCollegeList() throws SQLException {
+        String sql = "select * from CollgeInfo order by College_Name";
+
+        Statement statement = this.connection.createStatement();
+
+        ResultSet resultSet = statement.executeQuery(sql);
+        List<CollegeInfo> collegeInfoList = new ArrayList<>();
+
+
+        while (resultSet.next()){
+
+            CollegeInfo collegeInfo = this.applicationContext.getBean(CollegeInfo.class);
+            collegeInfo.setCollegeId(resultSet.getInt("College_Id"));
+            collegeInfo.setCollegeName(resultSet.getString("College_Name"));
+            collegeInfo.setCollegeTier(resultSet.getInt("College_tier"));
+            collegeInfo.setCollegeAddress(resultSet.getString("College_Address"));
+            collegeInfo.setCollegeCountry(resultSet.getString("College_Country"));
+            collegeInfo.setCollegeCity(resultSet.getString("College_City"));
+            collegeInfo.setCollegePhoneNumber(resultSet.getString("College_PhoneNumber"));
+            collegeInfo.setCollegeEmail(resultSet.getString("College_Email"));
+            collegeInfo.setTpoName(resultSet.getString("College_TpoName"));
+            collegeInfo.setTpoEmail(resultSet.getString("College_TpoEmailAddress"));
+            collegeInfo.setTpoPhoneNumber(resultSet.getString("College_TpoPhoneNumber"));
+
+            collegeInfoList.add(collegeInfo);
+
+        }
+
+        return collegeInfoList;
+    }
 }
 

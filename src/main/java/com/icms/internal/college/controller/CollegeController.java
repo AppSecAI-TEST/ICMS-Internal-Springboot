@@ -1,9 +1,12 @@
 package com.icms.internal.college.controller;
 
+import com.icms.internal.college.model.CollegeInfo;
 import com.icms.internal.college.model.CollegeInfoForm;
 import com.icms.internal.college.repository.CollegeRepository;
 import com.icms.internal.college.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -14,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/College")
+@RequestMapping("/api/vi/College")
 public class CollegeController
 {
 
@@ -27,9 +30,14 @@ public class CollegeController
     }
 
     @PostMapping("/Add")
-    public boolean addNewCollege(CollegeInfoForm collegeInfoForm) throws SQLException
-    {
-        return this.collegeService.addNewCollege(collegeInfoForm);
+    public ResponseEntity<Boolean> addNewCollege(@RequestBody final CollegeInfoForm collegeInfoForm) throws SQLException {
+
+        return new ResponseEntity<>(this.collegeService.addNewCollege(collegeInfoForm), HttpStatus.OK);
+    }
+
+    @GetMapping("/List")
+    public ResponseEntity<List<CollegeInfo>> getAllCollegeList() throws SQLException {
+        return new ResponseEntity<>(this.collegeService.getAllCollegeList(), HttpStatus.OK);
     }
 
 }

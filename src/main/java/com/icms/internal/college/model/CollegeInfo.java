@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by Infocepts India in 2017.
+ * Created by matth on 6/18/2017.
  */
+
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class CollegeInfoForm
-{
+public class CollegeInfo {
+
+    private int collegeId;
     private String collegeName;
     private int collegeTier;
     private String collegeAddress;
@@ -22,8 +24,15 @@ public class CollegeInfoForm
     private String tpoPhoneNumber;
     private String tpoEmail;
 
-    public String getCollegeName ()
-    {
+    public int getCollegeId() {
+        return collegeId;
+    }
+
+    public void setCollegeId(int collegeId) {
+        this.collegeId = collegeId;
+    }
+
+    public String getCollegeName() {
         return collegeName;
     }
 
@@ -105,16 +114,17 @@ public class CollegeInfoForm
 
     @Override
     public String toString() {
-        return "CollegeInfoForm{" +
-                "collegeName='" + collegeName + '\'' +
+        return "CollegeInfo{" +
+                "collegeId=" + collegeId +
+                ", collegeName='" + collegeName + '\'' +
                 ", collegeTier=" + collegeTier +
                 ", collegeAddress='" + collegeAddress + '\'' +
                 ", collegeCountry='" + collegeCountry + '\'' +
                 ", collegeCity='" + collegeCity + '\'' +
-                ", collegePhoneNumber=" + collegePhoneNumber +
+                ", collegePhoneNumber='" + collegePhoneNumber + '\'' +
                 ", collegeEmail='" + collegeEmail + '\'' +
                 ", tpoName='" + tpoName + '\'' +
-                ", tpoPhoneNumber=" + tpoPhoneNumber +
+                ", tpoPhoneNumber='" + tpoPhoneNumber + '\'' +
                 ", tpoEmail='" + tpoEmail + '\'' +
                 '}';
     }

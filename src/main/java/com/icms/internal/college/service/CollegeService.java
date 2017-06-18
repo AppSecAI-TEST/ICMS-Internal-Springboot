@@ -1,11 +1,13 @@
 package com.icms.internal.college.service;
 
+import com.icms.internal.college.model.CollegeInfo;
 import com.icms.internal.college.model.CollegeInfoForm;
 import com.icms.internal.college.repository.CollegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Infocepts India in 2017.
@@ -26,4 +28,7 @@ public class CollegeService
         return this.collegeRepository.addNewCollege(collegeInfoForm);
     }
 
+    public List<CollegeInfo> getAllCollegeList() throws SQLException {
+        return this.collegeRepository.getAllCollegeList();
+    }
 }

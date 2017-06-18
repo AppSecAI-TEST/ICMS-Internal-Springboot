@@ -22,7 +22,7 @@ public class DbConfig
         try
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=PreRecruitmentDB", "PreRecDB", "PreRecDB321");
+            connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=PreRecruitmentDB", "PreRecDB", "PreRecDB");
 
         }
         catch (ClassNotFoundException | SQLException e)

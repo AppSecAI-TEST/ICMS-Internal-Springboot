@@ -28,8 +28,7 @@ public class SharedApiController
     }
 
     @GetMapping("/Countries")
-    public ResponseEntity<List<String>> getCountriesList() throws SQLException
-    {
+    public ResponseEntity<List<String>> getCountriesList() throws SQLException, InterruptedException {
         return new ResponseEntity<>(this.sharedApiService.getCountryList(), HttpStatus.OK);
     }
 

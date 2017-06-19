@@ -1,15 +1,21 @@
 package com.icms.internal.login.controller;
 
+import com.icms.internal.login.models.LoginForm;
+import com.icms.internal.login.models.LoginResponse;
 import com.icms.internal.login.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 /**
  * Created by Infocepts India in 2017.
  */
 @RestController
-
+@CrossOrigin
+@RequestMapping("/api/v1/Authenticate")
 public class LoginController
 {
     private LoginService loginService;
@@ -20,18 +26,19 @@ public class LoginController
         this.loginService = loginService;
     }
 
-    @GetMapping("/admin/test")
-    public String test(){
-        return "ADMIN";
-    }
+    @PostMapping("/doLogin")
+    public ResponseEntity<LoginResponse> doLogin(@RequestBody final LoginForm loginForm) throws SQLException
+    {
 
-    @GetMapping("/user/test")
-    public String test1(){
-        return "USER";
-    }
+        LoginResponse loginResponse = this.loginService.doLogin(loginForm);
 
-    @GetMapping("/user/logout")
-    public String test3(){
-        return "Logged out";
+        if( null == loginResponse.getErrorMessage())
+        {
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>( loginResponse ,HttpStatus.UNAUTHORIZED );
+        }
     }
 }

@@ -1,8 +1,13 @@
 package com.icms.internal.login.service;
 
+import com.icms.internal.login.models.LoginForm;
+import com.icms.internal.login.models.LoginResponse;
 import com.icms.internal.login.repository.LoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 
 /**
@@ -13,14 +18,23 @@ import org.springframework.stereotype.Service;
 public class LoginService
 {
     private LoginRepository loginRepository;
+    private ApplicationContext applicationContext;
 
-    @Autowired
-    public LoginService (final LoginRepository loginRepository)
+    public LoginService (final LoginRepository loginRepository, final ApplicationContext applicationContext)
     {
         this.loginRepository = loginRepository;
+        this.applicationContext = applicationContext;
     }
 
-    public Boolean doLogin(){
-        return this.loginRepository.doLogin();
+    public LoginResponse doLogin(final LoginForm loginForm) throws SQLException
+    {
+        if(loginForm.getUsername().length() == 0 || loginForm.getPassword().length() ==0 ){
+            LoginResponse loginResponse = this.applicationContext.getBean(LoginResponse.class);
+            loginResponse.setErrorMessage("Username Password cannot be Empty.");
+            return loginResponse;
+        }else
+        {
+            return this.loginRepository.doLogin(loginForm);
+        }
     }
 }

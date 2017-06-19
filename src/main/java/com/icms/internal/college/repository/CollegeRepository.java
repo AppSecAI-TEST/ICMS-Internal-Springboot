@@ -42,7 +42,7 @@ public class CollegeRepository
 
         System.out.println(collegeInfoForm);
 
-        String sql = "INSERT INTO CollgeInfo values (?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO CollegeInfo values (?,?,?,?,?,?,?,?,?,?)";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.setString(1,collegeInfoForm.getCollegeName());
@@ -70,7 +70,7 @@ public class CollegeRepository
 //        try
 //        {
 //            Object object = parser
-//                    .parse(new FileReader("d:\\countriesToCities.json"));
+//                    .parse(new FileReader("e:\\countriesToCities.json"));
 //
 //            //convert Object to JSONObject
 //            JSONObject jsonObject = (JSONObject)object;
@@ -120,7 +120,7 @@ public class CollegeRepository
     }
 
     public List<CollegeInfo> getAllCollegeList() throws SQLException {
-        String sql = "select * from CollgeInfo order by College_Name";
+        String sql = "select * from CollegeInfo order by College_Name";
 
         Statement statement = this.connection.createStatement();
 
@@ -140,7 +140,7 @@ public class CollegeRepository
             collegeInfo.setCollegePhoneNumber(resultSet.getString("College_PhoneNumber"));
             collegeInfo.setCollegeEmail(resultSet.getString("College_Email"));
             collegeInfo.setTpoName(resultSet.getString("College_TpoName"));
-            collegeInfo.setTpoEmail(resultSet.getString("College_TpoEmailAddress"));
+            collegeInfo.setTpoEmail(resultSet.getString("College_TpoEmail"));
             collegeInfo.setTpoPhoneNumber(resultSet.getString("College_TpoPhoneNumber"));
 
             collegeInfoList.add(collegeInfo);

@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/api/vi/College")
+@RequestMapping("/api/v1/College")
 public class CollegeController
 {
 

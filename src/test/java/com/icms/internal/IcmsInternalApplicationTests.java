@@ -1,5 +1,7 @@
 package com.icms.internal;
 
+import com.icms.internal.Interviewer.model.InterviewCandidiateInfo;
+import com.icms.internal.Interviewer.repository.InterviewRepository;
 import com.icms.internal.college.repository.CollegeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,12 +16,16 @@ import java.sql.SQLException;
 public class IcmsInternalApplicationTests {
 
 	@Autowired
-	CollegeRepository collegeRepository;
+	InterviewRepository interviewRepository;
 
 	@Test
-	public void contextLoads() throws SQLException {
+	public void contextLoads() throws Exception
+	{
 
-		collegeRepository.add();
+		InterviewCandidiateInfo interviewCandidiateInfo = interviewRepository.getCandidateInfo("10006232.839");
+
+
+		System.out.println(interviewCandidiateInfo);
 
 	}
 

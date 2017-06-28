@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping ("/api/vi/Candidate")
+@RequestMapping ("/api/v1/Candidate")
 public class CandidateController
 {
     private CandidateService candidateService;

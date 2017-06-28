@@ -28,6 +28,9 @@ public class InterviewContoller
     @PostMapping("/InterviewCandidateInfo")
     public ResponseEntity<InterviewCandidiateInfo> getCandidateInfo(@RequestBody final RegistrationId candidateRegistrationId) throws Exception{
 
-        return new ResponseEntity<>( this.interviewService.getCandidateInfo(candidateRegistrationId.getRegistrationId()) , HttpStatus.OK);
+        InterviewCandidiateInfo interviewCandidiateInfo = this.interviewService.getCandidateInfo(candidateRegistrationId.getRegistrationId());
+
+        return new ResponseEntity<>( interviewCandidiateInfo , interviewCandidiateInfo == null ? HttpStatus.NOT_FOUND : HttpStatus.OK );
+
     }
 }

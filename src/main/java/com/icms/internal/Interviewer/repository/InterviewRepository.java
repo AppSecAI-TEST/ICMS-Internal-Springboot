@@ -33,7 +33,7 @@ public class InterviewRepository
     public InterviewCandidiateInfo getCandidateInfo(String candidateRegistrationId) throws Exception
     {
 
-        if(null == candidateRegistrationId && candidateRegistrationId.length() != 12){
+        if(null == candidateRegistrationId || candidateRegistrationId.length() != 12){
             throw new Exception("Invalid Registration Id");
         }
 
@@ -50,9 +50,10 @@ public class InterviewRepository
 
         ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        InterviewCandidiateInfo interviewCandidiateInfo = this.applicationContext.getBean(InterviewCandidiateInfo.class);
+        InterviewCandidiateInfo interviewCandidiateInfo = null;
 
         while (resultSet.next()){
+            interviewCandidiateInfo = this.applicationContext.getBean(InterviewCandidiateInfo.class);
             interviewCandidiateInfo.setCandidateId(resultSet.getString("Candidate_ID"));
             interviewCandidiateInfo.setCandidateFirstName(resultSet.getString("Candidate_FirstName"));
             interviewCandidiateInfo.setCandidateMiddlename(resultSet.getString("Candidate_MiddleName"));

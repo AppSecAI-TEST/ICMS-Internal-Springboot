@@ -34,7 +34,7 @@ public class InterviewCandidiateInfo
     private String candidateTechnicalInterviewStatus;
     private String candidateTechnicalInterviewerRemarks;
     private String hrInterviewerName;
-    private String candidateHrInterviewStataus;
+    private String candidateHrInterviewStatus;
     private String candidateHrInterviewerRemarks;
 
     public String getCandidateId ()
@@ -267,14 +267,14 @@ public class InterviewCandidiateInfo
         this.hrInterviewerName = hrInterviewerName;
     }
 
-    public String getCandidateHrInterviewStataus ()
+    public String getCandidateHrInterviewStatus ()
     {
-        return candidateHrInterviewStataus;
+        return candidateHrInterviewStatus;
     }
 
-    public void setCandidateHrInterviewStataus (final String candidateHrInterviewStataus)
+    public void setCandidateHrInterviewStatus (final String candidateHrInterviewStatus)
     {
-        this.candidateHrInterviewStataus = candidateHrInterviewStataus;
+        this.candidateHrInterviewStatus = candidateHrInterviewStatus;
     }
 
     public String getCandidateHrInterviewerRemarks ()
@@ -314,7 +314,7 @@ public class InterviewCandidiateInfo
                 ", candidateTechnicalInterviewStatus='" + candidateTechnicalInterviewStatus + '\'' +
                 ", candidateTechnicalInterviewerRemarks='" + candidateTechnicalInterviewerRemarks + '\'' +
                 ", hrInterviewerName='" + hrInterviewerName + '\'' +
-                ", candidateHrInterviewStataus='" + candidateHrInterviewStataus + '\'' +
+                ", candidateHrInterviewStatus='" + candidateHrInterviewStatus + '\'' +
                 ", candidateHrInterviewerRemarks='" + candidateHrInterviewerRemarks + '\'' +
                 '}';
     }

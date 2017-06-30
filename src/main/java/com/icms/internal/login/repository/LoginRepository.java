@@ -1,8 +1,11 @@
 package com.icms.internal.login.repository;
 
 import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.login.controller.LoginController;
 import com.icms.internal.login.models.LoginForm;
 import com.icms.internal.login.models.LoginResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -20,6 +23,8 @@ import java.sql.SQLException;
 public class LoginRepository
 {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
@@ -34,17 +39,20 @@ public class LoginRepository
 
     public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
+        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
 
-        preparedStatement.setString(1,loginForm.getUsername());
-        preparedStatement.setString(2,loginForm.getPassword());
+        preparedStatement.setString(1, loginForm.getUsername());
+        preparedStatement.setString(2, loginForm.getPassword());
 
         ResultSet resultSet = preparedStatement.executeQuery();
         LoginResponse loginResponse = this.applicationContext.getBean(LoginResponse.class);
 
-        if(resultSet.next()){
+        if (resultSet.next())
+        {
 
             String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
             String token = Base64Utils.encodeToString(usernamePassword.getBytes());
@@ -52,7 +60,9 @@ public class LoginRepository
             loginResponse.setUsername(resultSet.getString("Login_Name"));
             loginResponse.setAuthRole(resultSet.getString("Role").trim());
 
-        }else{
+        }
+        else
+        {
             loginResponse.setErrorMessage("Invalid Username Password.");
         }
 

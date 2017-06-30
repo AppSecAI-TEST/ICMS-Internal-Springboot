@@ -1,6 +1,5 @@
 package com.icms.internal.sharedApi.controller;
 
-import com.icms.internal.sharedApi.repository.SharedApiRepository;
 import com.icms.internal.sharedApi.service.SharedApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/Shared/api/v1")
+@RequestMapping ("/Shared/api/v1")
 public class SharedApiController
 {
     private final SharedApiService sharedApiService;
@@ -27,14 +26,15 @@ public class SharedApiController
         this.sharedApiService = sharedApiService;
     }
 
-    @GetMapping("/Countries")
-    public ResponseEntity<List<String>> getCountriesList() throws SQLException, InterruptedException {
+    @GetMapping ("/Countries")
+    public ResponseEntity<List<String>> getCountriesList () throws SQLException, InterruptedException
+    {
         return new ResponseEntity<>(this.sharedApiService.getCountryList(), HttpStatus.OK);
     }
 
-    @GetMapping("/Cities/{countryName}")
-    public ResponseEntity<List<String>> getCityList(@PathVariable("countryName") final String countryName) throws SQLException
+    @GetMapping ("/Cities/{countryName}")
+    public ResponseEntity<List<String>> getCityList (@PathVariable ("countryName") final String countryName) throws SQLException
     {
-        return new ResponseEntity<>(this.sharedApiService.getCityList(countryName) ,HttpStatus.OK );
+        return new ResponseEntity<>(this.sharedApiService.getCityList(countryName), HttpStatus.OK);
     }
 }

@@ -34,8 +34,9 @@ public class SharedApiRepository
         ResultSet resultSet = statement.executeQuery(sql);
         List<String> countryList = new ArrayList<>();
 
-        while (resultSet.next()){
-               countryList.add(resultSet.getString("Country_Name"));
+        while (resultSet.next())
+        {
+            countryList.add(resultSet.getString("Country_Name"));
         }
 
 
@@ -44,7 +45,7 @@ public class SharedApiRepository
 
     public List<String> getCityList (String countryName) throws SQLException
     {
-        String sql =String.format("select City_Name from CountryCityInfo where Country_Name = '%s' order by City_Name",countryName);
+        String sql = String.format("select City_Name from CountryCityInfo where Country_Name = '%s' order by City_Name", countryName);
 
         Statement statement = this.connection.createStatement();
 
@@ -52,7 +53,8 @@ public class SharedApiRepository
 
         List<String> cityList = new ArrayList<>();
 
-        while (resultSet.next()){
+        while (resultSet.next())
+        {
             cityList.add(resultSet.getString("City_Name"));
         }
 

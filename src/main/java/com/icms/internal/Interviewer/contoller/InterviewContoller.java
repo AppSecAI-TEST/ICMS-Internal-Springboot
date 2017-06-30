@@ -5,6 +5,8 @@ import com.icms.internal.Interviewer.model.InterviewCandidiateInfo;
 import com.icms.internal.Interviewer.model.RegistrationId;
 import com.icms.internal.Interviewer.model.TechnicalInterviewUpdateForm;
 import com.icms.internal.Interviewer.service.InterviewService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class InterviewContoller
 
     private InterviewService interviewService;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewContoller.class);
+
     @Autowired
     public InterviewContoller (final InterviewService interviewService)
     {
@@ -34,6 +38,7 @@ public class InterviewContoller
     @PostMapping("/InterviewCandidateInfo")
     public ResponseEntity<InterviewCandidiateInfo> getCandidateInfo(@RequestBody final RegistrationId candidateRegistrationId) throws Exception{
 
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         InterviewCandidiateInfo interviewCandidiateInfo = this.interviewService.getCandidateInfo(candidateRegistrationId.getRegistrationId());
 
         return new ResponseEntity<>( interviewCandidiateInfo , interviewCandidiateInfo == null ? HttpStatus.NOT_FOUND : HttpStatus.OK );
@@ -44,6 +49,8 @@ public class InterviewContoller
 
     @PostMapping("/updateTechnicalInterview")
     public ResponseEntity<Boolean> updateTechnicalInterviewDetails(@RequestBody final TechnicalInterviewUpdateForm technicalInterviewUpdateForm , final HttpServletRequest httpServletRequest) throws SQLException{
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         String authToken = httpServletRequest.getHeader("authToken");
         String interviewername = new String(Base64Utils.decode(authToken.getBytes())).split(":")[0];
@@ -60,6 +67,8 @@ public class InterviewContoller
 
     @PostMapping("/updateHrInterview")
     public ResponseEntity<Boolean> updateHrInterviewDetails(@RequestBody final HrInterviewUpdateForm hrInterviewUpdateForm , final HttpServletRequest httpServletRequest) throws SQLException{
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         String authToken = httpServletRequest.getHeader("authToken");
         String interviewername = new String(Base64Utils.decode(authToken.getBytes())).split(":")[0];

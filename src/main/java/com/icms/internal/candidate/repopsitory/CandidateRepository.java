@@ -1,7 +1,10 @@
 package com.icms.internal.candidate.repopsitory;
 
 import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.Interviewer.contoller.InterviewContoller;
 import com.icms.internal.candidate.model.CandidateInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -23,6 +26,7 @@ public class CandidateRepository
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewContoller.class);
 
     @Autowired
     public CandidateRepository (final ApplicationContext applicationContext) throws SQLException
@@ -33,6 +37,7 @@ public class CandidateRepository
 
     public List<CandidateInfo> getAllCandidateList () throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         String sql = "select * from CandidateMaster as cm left join CollegeInfo as ci on cm.Candidate_College = ci.College_ID left join SpecializationMaster as sm on cm.Candidate_Specialization = sm.Specialization_Id";
 
         this.preparedStatement = this.connection.prepareStatement(sql);

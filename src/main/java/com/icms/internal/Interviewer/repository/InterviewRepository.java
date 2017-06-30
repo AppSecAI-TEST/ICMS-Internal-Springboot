@@ -4,6 +4,8 @@ import com.icms.internal.DbConfig.DbConfig;
 import com.icms.internal.Interviewer.model.HrInterviewUpdateForm;
 import com.icms.internal.Interviewer.model.InterviewCandidiateInfo;
 import com.icms.internal.Interviewer.model.TechnicalInterviewUpdateForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,7 @@ public class InterviewRepository
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewRepository.class);
 
     @Autowired
     public InterviewRepository (final ApplicationContext applicationContext) throws SQLException
@@ -36,6 +39,7 @@ public class InterviewRepository
 
     public InterviewCandidiateInfo getCandidateInfo (final String candidateRegistrationId) throws Exception
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         if (null == candidateRegistrationId || candidateRegistrationId.length() != 12)
         {
@@ -100,6 +104,8 @@ public class InterviewRepository
 
     public boolean updateTechnicalInterviewDetails (final TechnicalInterviewUpdateForm technicalInterviewUpdateForm, final String interviewerName) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
@@ -118,6 +124,8 @@ public class InterviewRepository
 
     public boolean updateHrInterviewDetails (final HrInterviewUpdateForm hrInterviewUpdateForm, final String interviewerName) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 

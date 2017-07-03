@@ -55,38 +55,11 @@ public class ImportExportDataController
 
 
     @PostMapping("/upload")
-    public ResponseEntity<String> singleFileUpload(@RequestParam("excelToUpload") MultipartFile file) throws Exception {
-
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("Nothing to upload", HttpStatus.BAD_REQUEST);
-        }
-
-        try {
-
-            //delete file in temp dir
-            File tempFile = new File( System.getProperty("java.io.tmpdir") + file.getOriginalFilename());
-            if(tempFile.exists()){
-                tempFile.delete();
-            }
-
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(System.getProperty("java.io.tmpdir") + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-
-
-
-
-
-
-
-
-            return new ResponseEntity<>("File Successfully uploaded", HttpStatus.OK );
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception(e.getMessage());
+    public ResponseEntity<String> interviewFileUpload(@RequestParam("excelToUpload") MultipartFile file) throws Exception {
+        if(this.importExportDataService.interviewFileUpload(file)){
+            return new ResponseEntity<>("Data uploaded Successfully", HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>("Unable to process request.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

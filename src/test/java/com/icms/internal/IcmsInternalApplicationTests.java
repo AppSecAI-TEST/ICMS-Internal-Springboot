@@ -19,7 +19,7 @@ public class IcmsInternalApplicationTests {
 	@Test
 	public void contextLoads() throws Exception
 	{
-		System.out.println(importExportDataRepository.insertDataInInterviewDB(System.getProperty("java.io.tmpdir") + "Registered_CandidatesInfo_2017-06-30-19-47-49.xlsx"));
+		System.out.println(importExportDataRepository.insertDataInInterviewDB(System.getProperty("java.io.tmpdir") + "Registered_CandidatesInfo_2017-07-03-11-29-47.xlsx"));
 
 	}
 

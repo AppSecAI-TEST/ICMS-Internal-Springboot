@@ -16,10 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Infocepts India in 2017.
@@ -29,6 +26,7 @@ public class ImportExportDataRepository
 {
     private final Connection connection;
     private final ApplicationContext applicationContext;
+    TreeMap<Integer, Integer> listToWrite = new TreeMap<>();
     private PreparedStatement preparedStatement = null;
 
     @Autowired
@@ -142,47 +140,86 @@ public class ImportExportDataRepository
     }
 
 
-    public boolean insertDataInInterviewDB(String filePath){
-        try {
+    public boolean insertDataInInterviewDB(String filePath) throws Exception
+    {
+        if(this.isExcelValid(filePath) && (!this.listToWrite.isEmpty())) {
 
-            FileInputStream excelFile = new FileInputStream(new File(filePath));
-            Workbook workbook = new XSSFWorkbook(excelFile);
-            Sheet datatypeSheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = datatypeSheet.iterator();
+            //Clear old records from table
+            this.clearOldDataInInterviewTable();
 
-            iterator.next();
+            this.connection.setAutoCommit(false);
+            String sql = "insert into InterviewMaster (Candidate_Id, Candidate_AptitudeMarks) values (?,?)";
+            this.preparedStatement = this.connection.prepareStatement(sql);
 
-            while (iterator.hasNext()) {
-
-                Row currentRow = iterator.next();
-                Iterator<Cell> cellIterator = currentRow.iterator();
-
-
-                System.out.println( (int) currentRow.getCell(0).getNumericCellValue() );
-
-
-
-//                while (cellIterator.hasNext()) {
-//
-//                    Cell currentCell = cellIterator.next();
-//                    //getCellTypeEnum shown as deprecated for version 3.15
-//                    //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
-//                    if (currentCell.getCellTypeEnum() == CellType.STRING) {
-//                        System.out.print(currentCell.getStringCellValue() + "--");
-//                    } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
-//                        System.out.print(currentCell.getNumericCellValue() + "--");
-//                    }
-//
-//                }
-                System.out.println();
-
+            for (Map.Entry<Integer, Integer> entry : this.listToWrite.entrySet()){
+                this.preparedStatement.setInt(1,entry.getKey());
+                this.preparedStatement.setInt(2,entry.getValue());
+                this.preparedStatement.addBatch();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            this.preparedStatement.executeBatch();
+            this.connection.commit();
+            return true;
+
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    private void clearOldDataInInterviewTable() throws SQLException
+    {
+        String sql = "delete from InterviewMaster";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+        this.preparedStatement.executeUpdate();
+    }
+
+
+    private Boolean isExcelValid(String filePath) throws Exception
+    {
+        FileInputStream excelFile = new FileInputStream(new File(filePath));
+        Workbook workbook = new XSSFWorkbook(excelFile);
+        Sheet datatypeSheet = workbook.getSheetAt(0);
+        Iterator<Row> iterator = datatypeSheet.iterator();
+
+
+        //Check if the sheet contains 2 cells as expected.
+        Row firstRow = iterator.next();
+        String Candidate_ID = firstRow.getCell(0).getStringCellValue();
+        String Aptitude_Marks = firstRow.getCell(1).getStringCellValue();
+
+
+        if (Candidate_ID.equalsIgnoreCase("Candidate_ID") && Aptitude_Marks.equalsIgnoreCase("Aptitude_Marks"))
+        {
+            //clear previous values in list
+            this.listToWrite.clear();
+
+            //Check if each cell has data in proper format
+            while (iterator.hasNext())
+            {
+                Row currentRow = iterator.next();
+                int cellNos = 1;
+
+                try{
+                    ++cellNos;
+                    int candidateId = (int) currentRow.getCell(0).getNumericCellValue();
+                    int aptiMarks = (int) currentRow.getCell(1).getNumericCellValue();
+
+                    this.listToWrite.put(candidateId,aptiMarks);
+
+                    System.out.println(candidateId + "\t" + aptiMarks);
+                }
+                catch (Exception ex){
+                    throw new Exception("Unable to parse file error occurred on row : " + cellNos );
+                }
+            }
+            return true;
+        }
+        else
+        {
+            //columns are not properly mapped throwing error.
+            throw new Exception("Invalid Columns in sheet. The first column in sheet should be Candidate_ID , Aptitude_Marks ");
         }
 
-        return true;
     }
 }

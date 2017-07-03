@@ -1,31 +1,25 @@
 package com.icms.internal;
 
-import com.icms.internal.Interviewer.model.InterviewCandidiateInfo;
-import com.icms.internal.Interviewer.repository.InterviewRepository;
-import com.icms.internal.college.repository.CollegeRepository;
+import com.icms.internal.importexportdata.repository.ImportExportDataRepository;
+import com.icms.internal.interviewer.model.InterviewCandidiateInfo;
+import com.icms.internal.interviewer.repository.InterviewRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.SQLException;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class IcmsInternalApplicationTests {
 
 	@Autowired
-	InterviewRepository interviewRepository;
+	ImportExportDataRepository importExportDataRepository;
 
 	@Test
 	public void contextLoads() throws Exception
 	{
-
-		InterviewCandidiateInfo interviewCandidiateInfo = interviewRepository.getCandidateInfo("10006232.839");
-
-
-		System.out.println(interviewCandidiateInfo);
+		System.out.println(importExportDataRepository.insertDataInInterviewDB(System.getProperty("java.io.tmpdir") + "Registered_CandidatesInfo_2017-06-30-19-47-49.xlsx"));
 
 	}
 

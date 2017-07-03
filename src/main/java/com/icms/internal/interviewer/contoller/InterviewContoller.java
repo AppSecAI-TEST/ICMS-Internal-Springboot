@@ -1,10 +1,10 @@
-package com.icms.internal.Interviewer.contoller;
+package com.icms.internal.interviewer.contoller;
 
-import com.icms.internal.Interviewer.model.HrInterviewUpdateForm;
-import com.icms.internal.Interviewer.model.InterviewCandidiateInfo;
-import com.icms.internal.Interviewer.model.RegistrationId;
-import com.icms.internal.Interviewer.model.TechnicalInterviewUpdateForm;
-import com.icms.internal.Interviewer.service.InterviewService;
+import com.icms.internal.interviewer.model.HrInterviewUpdateForm;
+import com.icms.internal.interviewer.model.InterviewCandidiateInfo;
+import com.icms.internal.interviewer.model.RegistrationId;
+import com.icms.internal.interviewer.model.TechnicalInterviewUpdateForm;
+import com.icms.internal.interviewer.service.InterviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

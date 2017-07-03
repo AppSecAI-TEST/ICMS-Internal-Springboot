@@ -1,9 +1,9 @@
-package com.icms.internal.Interviewer.service;
+package com.icms.internal.interviewer.service;
 
-import com.icms.internal.Interviewer.model.HrInterviewUpdateForm;
-import com.icms.internal.Interviewer.model.InterviewCandidiateInfo;
-import com.icms.internal.Interviewer.model.TechnicalInterviewUpdateForm;
-import com.icms.internal.Interviewer.repository.InterviewRepository;
+import com.icms.internal.interviewer.model.HrInterviewUpdateForm;
+import com.icms.internal.interviewer.model.InterviewCandidiateInfo;
+import com.icms.internal.interviewer.model.TechnicalInterviewUpdateForm;
+import com.icms.internal.interviewer.repository.InterviewRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.icms.internal.candidate.service;
 
-import com.icms.internal.Interviewer.contoller.InterviewContoller;
+import com.icms.internal.interviewer.contoller.InterviewContoller;
 import com.icms.internal.candidate.model.CandidateInfo;
 import com.icms.internal.candidate.repopsitory.CandidateRepository;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
-package com.icms.internal.sharedApi.service;
+package com.icms.internal.sharedapi.service;
 
-import com.icms.internal.sharedApi.repository.SharedApiRepository;
+import com.icms.internal.sharedapi.repository.SharedApiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

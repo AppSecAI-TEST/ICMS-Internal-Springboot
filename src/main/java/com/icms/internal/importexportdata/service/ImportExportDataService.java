@@ -1,6 +1,6 @@
-package com.icms.internal.ImportExportData.service;
+package com.icms.internal.importexportdata.service;
 
-import com.icms.internal.ImportExportData.repository.ImportExportDataRepository;
+import com.icms.internal.importexportdata.repository.ImportExportDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;

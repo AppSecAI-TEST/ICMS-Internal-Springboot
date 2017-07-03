@@ -1,7 +1,7 @@
-package com.icms.internal.ImportExportData.repository;
+package com.icms.internal.importexportdata.repository;
 
 import com.icms.internal.DbConfig.DbConfig;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -140,5 +139,50 @@ public class ImportExportDataRepository
         }
 
         return null;
+    }
+
+
+    public boolean insertDataInInterviewDB(String filePath){
+        try {
+
+            FileInputStream excelFile = new FileInputStream(new File(filePath));
+            Workbook workbook = new XSSFWorkbook(excelFile);
+            Sheet datatypeSheet = workbook.getSheetAt(0);
+            Iterator<Row> iterator = datatypeSheet.iterator();
+
+            iterator.next();
+
+            while (iterator.hasNext()) {
+
+                Row currentRow = iterator.next();
+                Iterator<Cell> cellIterator = currentRow.iterator();
+
+
+                System.out.println( (int) currentRow.getCell(0).getNumericCellValue() );
+
+
+
+//                while (cellIterator.hasNext()) {
+//
+//                    Cell currentCell = cellIterator.next();
+//                    //getCellTypeEnum shown as deprecated for version 3.15
+//                    //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
+//                    if (currentCell.getCellTypeEnum() == CellType.STRING) {
+//                        System.out.print(currentCell.getStringCellValue() + "--");
+//                    } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+//                        System.out.print(currentCell.getNumericCellValue() + "--");
+//                    }
+//
+//                }
+                System.out.println();
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }

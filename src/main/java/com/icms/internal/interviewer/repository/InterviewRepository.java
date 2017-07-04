@@ -46,7 +46,7 @@ public class InterviewRepository
             throw new Exception("Invalid Registration Id");
         }
 
-        String sql = "select * from CandidateMaster as cm left join CollegeInfo as ci on cm.Candidate_College = ci.College_ID left join SpecializationMaster as sm on cm.Candidate_Specialization = sm.Specialization_Id left join InterviewMaster as im on cm.Candidate_ID = im.candidate_Id where cm.Candidate_ID = ? and SUBSTRING (cm.Candidate_CreatedTimestamp,12,19) = ?";
+        String sql = "Select * from InterviewMaster as im left join CandidateMaster as cm on im.Candidate_Id = cm.Candidate_ID left join CollegeInfo as ci on cm.Candidate_College = ci.College_ID left join SpecializationMaster as sm on cm.Candidate_Specialization = sm.Specialization_Id where im.Candidate_Id = ? and SUBSTRING (cm.Candidate_CreatedTimestamp,12,19) = ?";
 
 
         String registrationId = candidateRegistrationId.substring(0, 5);

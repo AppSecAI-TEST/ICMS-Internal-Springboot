@@ -61,4 +61,8 @@ public class ImportExportDataService
             return true;
         }
     }
+
+    public String downloadInterviewedCandidateExcel() {
+        return this.importExportDataRepository.downloadInterviewedCandidateExcel();
+    }
 }

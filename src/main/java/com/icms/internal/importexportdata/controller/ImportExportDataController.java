@@ -35,6 +35,7 @@ public class ImportExportDataController
     }
 
     @GetMapping("/download/RegisteredCandidateExcel")
+    @SuppressWarnings("Duplicates")
     public void downloadRegisteredCandidateExcel(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
     {
         String filePath = this.importExportDataService.downloadRegisteredCandidateExcel();
@@ -52,6 +53,28 @@ public class ImportExportDataController
             response.getOutputStream().flush();
         }
     }
+
+
+
+    @GetMapping("/download/InterviewedCandidateExcel")
+    @SuppressWarnings("Duplicates")
+    public void downloadInterviewedCandidateExcel(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
+    {
+        String filePath = this.importExportDataService.downloadInterviewedCandidateExcel();
+
+        if( null == filePath)
+        {
+            throw new IOException("Unable to Generate Excel for interviewed candidate");
+        }else {
+            Path file = Paths.get(filePath);
+            response.setContentType("application/vnd.ms-excel");
+            response.addHeader("Content-Disposition", "attachment; filename=" + file.getFileName());
+
+            Files.copy(file, response.getOutputStream());
+            response.getOutputStream().flush();
+        }
+    }
+
 
 
     @PostMapping("/upload")

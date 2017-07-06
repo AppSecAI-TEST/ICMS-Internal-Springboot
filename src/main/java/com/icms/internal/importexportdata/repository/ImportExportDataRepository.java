@@ -57,6 +57,7 @@ public class ImportExportDataRepository
         header.add("Candidate_FirstName");
         header.add("Candidate_MiddleName");
         header.add("Candidate_LastName");
+        header.add("Candidate_CollegeName");
         header.add("Candidate_Gender");
         header.add("Candidate_Email");
         header.add("Candidate_Phone");
@@ -74,9 +75,11 @@ public class ImportExportDataRepository
         rowid=1;
         try
         {
-            String sql = "select Candidate_ID , Candidate_FirstName, Candidate_MiddleName, Candidate_LastName , Candidate_Gender, Candidate_Email, Candidate_Phone from CandidateMaster;";
+            String sql = "select Candidate_ID , Candidate_FirstName, Candidate_MiddleName, Candidate_LastName , Candidate_Gender, Candidate_Email, Candidate_Phone, ci.College_Name , cm.Candidate_CollegeName from CandidateMaster as cm left join CollegeInfo as ci on  cm.Candidate_College = ci.College_ID";
+
             this.preparedStatement = this.connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()){
 
                 cellid = 0;
@@ -85,7 +88,7 @@ public class ImportExportDataRepository
                 Cell c1 = row.createCell(cellid++);
                 c1.setCellValue( Integer.parseInt(resultSet.getString("Candidate_ID")));
 
-                Cell c2 = row.createCell(cellid++);
+                Cell c2 = row.createCell(cellid++);// Left Blank for vendor to fill apti marks.
 
                 Cell c3 = row.createCell(cellid++);
                 c3.setCellValue(resultSet.getString("Candidate_FirstName"));
@@ -97,13 +100,20 @@ public class ImportExportDataRepository
                 c5.setCellValue(resultSet.getString("Candidate_LastName"));
 
                 Cell c6 = row.createCell(cellid++);
-                c6.setCellValue(resultSet.getString("Candidate_Gender"));
+                String collegeName = resultSet.getString("College_Name");
+                if(null == collegeName ){
+                    collegeName = resultSet.getString("Candidate_CollegeName");
+                }
+                c6.setCellValue(collegeName);
 
                 Cell c7 = row.createCell(cellid++);
-                c7.setCellValue(resultSet.getString("Candidate_Email"));
+                c7.setCellValue(resultSet.getString("Candidate_Gender"));
 
                 Cell c8 = row.createCell(cellid++);
-                c8.setCellValue( Long.parseLong( resultSet.getString( "Candidate_Phone")) );
+                c8.setCellValue(resultSet.getString("Candidate_Email"));
+
+                Cell c9 = row.createCell(cellid++);
+                c9.setCellValue( Long.parseLong( resultSet.getString( "Candidate_Phone")) );
             }
 
 

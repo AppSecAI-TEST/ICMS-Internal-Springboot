@@ -36,7 +36,6 @@ public class LoginRepository
         this.applicationContext = applicationContext;
     }
 
-
     public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -53,13 +52,11 @@ public class LoginRepository
 
         if (resultSet.next())
         {
-
             String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
             String token = Base64Utils.encodeToString(usernamePassword.getBytes());
             loginResponse.setAuthToken(token);
             loginResponse.setUsername(resultSet.getString("Login_Name"));
             loginResponse.setAuthRole(resultSet.getString("Role").trim());
-
         }
         else
         {

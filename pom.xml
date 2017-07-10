@@ -92,6 +92,13 @@
 			<version>1.0-beta</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.unboundid</groupId>
+			<artifactId>unboundid-ldapsdk</artifactId>
+			<version>4.0.0</version>
+			<scope>test</scope>
+		</dependency>
+
     </dependencies>
 
 	<build>

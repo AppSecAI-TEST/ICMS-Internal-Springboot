@@ -48,7 +48,7 @@ public class RegistrationSettingsRepository {
 
 
     public boolean saveRegistrationWindowDates( final String startDate, final String endDate ) throws SQLException, ParseException {
-        System.out.println(startDate + "-" + endDate);
+        //System.out.println(startDate + "-" + endDate);
 
         String sql = "update RegistrationWindowSetting set RegistrationWindowStartDate = ?,  RegistrationWindowEndDate= ? where SettingId = 101 ";
 

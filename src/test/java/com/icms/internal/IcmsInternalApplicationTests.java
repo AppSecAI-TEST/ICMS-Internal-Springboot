@@ -1,8 +1,8 @@
 package com.icms.internal;
 
-import com.icms.internal.importexportdata.repository.ImportExportDataRepository;
-import com.icms.internal.interviewer.model.InterviewCandidiateInfo;
-import com.icms.internal.interviewer.repository.InterviewRepository;
+
+import com.icms.internal.usermanagement.repository.UserManagementRepository;
+import com.unboundid.ldap.sdk.LDAPConnection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +14,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class IcmsInternalApplicationTests {
 
 	@Autowired
-	ImportExportDataRepository importExportDataRepository;
+	UserManagementRepository userManagementRepository;
 
 	@Test
 	public void contextLoads() throws Exception
 	{
-		System.out.println( importExportDataRepository.downloadInterviewedCandidateExcel() );
+        LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com",389,"rragashe","Wei3d.4pps");
+
+        if(ldapConnection.isConnected()){
+            System.out.println("Connected");
+        } else {
+            System.out.println("Not connected");
+        }
 
 	}
 

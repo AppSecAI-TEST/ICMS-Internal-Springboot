@@ -57,4 +57,14 @@ public class LoginResponse
     {
         this.errorMessage = errorMessage;
     }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "username='" + username + '\'' +
+                ", authToken='" + authToken + '\'' +
+                ", authRole='" + authRole + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                '}';
+    }
 }

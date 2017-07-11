@@ -65,4 +65,32 @@ public class UserManagementRepository
 
     }
 
+    public boolean addNewUser(final AddUserForm addUserForm) throws SQLException {
+
+        String sql = "insert into LoginInfo (Login_name, Role) values (?,?)";
+
+        this.preparedStatement =  this.connection.prepareStatement(sql);
+        this.preparedStatement.setString(1,addUserForm.getUsername());
+
+        if(addUserForm.getRole().equalsIgnoreCase("Admin")){
+            this.preparedStatement.setString(2,"A");
+        } else if(addUserForm.getRole().equalsIgnoreCase("HR")){
+            this.preparedStatement.setString(2,"H");
+        } else {
+            this.preparedStatement.setString(2,"I");
+        }
+
+        return this.preparedStatement.executeUpdate() > 0;
+    }
+
+
+    public boolean deleteUser(final String username) throws SQLException {
+
+        String sql = "delete from LoginInfo where Login_name = ?";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+        this.preparedStatement.setString(1, username);
+
+        return this.preparedStatement.executeUpdate() > 0;
+    }
+
 }

@@ -4,6 +4,8 @@ import com.icms.internal.DbConfig.DbConfig;
 import com.icms.internal.login.controller.LoginController;
 import com.icms.internal.login.models.LoginForm;
 import com.icms.internal.login.models.LoginResponse;
+import com.unboundid.ldap.sdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +42,20 @@ public class LoginRepository
     {
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
+        // String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
+        String sql = "select * from LoginInfo where Login_name = ?";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
 
-        preparedStatement.setString(1, loginForm.getUsername());
-        preparedStatement.setString(2, loginForm.getPassword());
+        preparedStatement.setString(1, loginForm.getUsername().replace("@infocepts.com",""));
+        //preparedStatement.setString(2, loginForm.getPassword());
 
         ResultSet resultSet = preparedStatement.executeQuery();
         LoginResponse loginResponse = this.applicationContext.getBean(LoginResponse.class);
 
-        if (resultSet.next())
+
+
+        if (resultSet.next() && this.doLdapLogin(loginForm))
         {
             String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
             String token = Base64Utils.encodeToString(usernamePassword.getBytes());
@@ -64,5 +69,31 @@ public class LoginRepository
         }
 
         return loginResponse;
+    }
+
+    public boolean doLdapLogin(final LoginForm loginForm){
+        try
+        {
+
+            String uname = loginForm.getUsername();
+
+            if( ! loginForm.getUsername().toLowerCase().contains("@infocepts.com"))
+                 uname += "@infocepts.com";
+
+            LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com", 389, uname, loginForm.getPassword());
+
+            if(ldapConnection.isConnected()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (LDAPException e)
+        {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

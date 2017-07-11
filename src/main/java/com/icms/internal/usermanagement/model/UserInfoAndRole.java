@@ -14,6 +14,7 @@ public class UserInfoAndRole
     private String username;
     private ROLE role;
 
+
     public String getUsername ()
     {
         return username;

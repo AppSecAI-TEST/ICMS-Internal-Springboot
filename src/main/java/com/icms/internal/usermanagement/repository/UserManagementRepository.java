@@ -41,7 +41,6 @@ public class UserManagementRepository
         this.preparedStatement = this.connection.prepareStatement(sql);
         ResultSet resultSet = this.preparedStatement.executeQuery();
 
-
         List<UserInfoAndRole> userInfoAndRoleList = new ArrayList<>();
 
         while (resultSet.next()){
@@ -67,14 +66,21 @@ public class UserManagementRepository
 
     public boolean addNewUser(final AddUserForm addUserForm) throws SQLException {
 
+
+         for( UserInfoAndRole userInfoAndRole : this.getAllUsers() ){
+             if(userInfoAndRole.getUsername().equalsIgnoreCase( addUserForm.getUserEmail())){
+                 throw new SQLException("User Already Exists.");
+             }
+         }
+
         String sql = "insert into LoginInfo (Login_name, Role) values (?,?)";
 
         this.preparedStatement =  this.connection.prepareStatement(sql);
-        this.preparedStatement.setString(1,addUserForm.getUsername());
+        this.preparedStatement.setString(1,addUserForm.getUserEmail());
 
-        if(addUserForm.getRole().equalsIgnoreCase("Admin")){
+        if(addUserForm.getRole().equalsIgnoreCase("A")){
             this.preparedStatement.setString(2,"A");
-        } else if(addUserForm.getRole().equalsIgnoreCase("HR")){
+        } else if(addUserForm.getRole().equalsIgnoreCase("H")){
             this.preparedStatement.setString(2,"H");
         } else {
             this.preparedStatement.setString(2,"I");

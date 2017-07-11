@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class AddUserForm
 {
-    private String username;
+    private String userEmail;
     private String role;
 
-    public String getUsername ()
+    public String getUserEmail ()
     {
-        return username;
+        return userEmail;
     }
 
-    public void setUsername (final String username)
+    public void setUserEmail (final String userEmail)
     {
-        this.username = username;
+        this.userEmail = userEmail;
     }
 
     public String getRole ()
@@ -38,7 +38,7 @@ public class AddUserForm
     public String toString ()
     {
         return "AddUserForm{" +
-                "username='" + username + '\'' +
+                "userEmail='" + userEmail + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }

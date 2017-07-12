@@ -63,4 +63,45 @@ public class RegistrationSettingsRepository {
     }
 
 
+    private void backupCandidateMaster()throws SQLException {
+
+        String sql = "insert into OldRegistrationCandidateMaster select * from CandidateMaster";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+        this.preparedStatement.executeUpdate();
+    }
+
+    private boolean clearCandidateMaster() throws SQLException {
+
+
+        //Clear records from Candidate master
+        String sql = "delete from CandidateMaster";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+        this.preparedStatement.executeUpdate();
+
+
+        //Reset the CandidateRegId (Pk) to 10001
+        sql = "DBCC CHECKIDENT ('CandidateMaster', RESEED, 10000)";
+        this.preparedStatement =  this.connection.prepareStatement(sql);
+        this.preparedStatement.executeUpdate();
+
+        //check if there are no rows in the candidateMaster table DB
+        sql = "select count (*) as Candidate_Records from CandidateMaster";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+
+        ResultSet resultSet = this.preparedStatement.executeQuery();
+        if(resultSet.next())
+        {
+            int rows = resultSet.getInt("Candidate_Records");
+            return rows == 0;
+        }
+
+        return false;
+    }
+
+    public boolean dataBaseCleanUp() throws SQLException
+    {
+        this.backupCandidateMaster();
+        return this.clearCandidateMaster();
+    }
+
 }

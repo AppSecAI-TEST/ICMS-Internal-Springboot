@@ -39,4 +39,14 @@ public class RegistrationSettingsContoller {
     public ResponseEntity<RegistrationWindowDates> getCurrentRegistrationWindowRange() throws SQLException, ParseException {
         return new ResponseEntity<>(this.registrationSettingsService.getCurrentRegistrationWindowRange(), HttpStatus.OK );
     }
+
+    @DeleteMapping("/databaseCleanUp")
+    public ResponseEntity<?> dataBaseCleanUp() throws SQLException {
+        if( this.registrationSettingsService.dataBaseCleanUp() ){
+            return new ResponseEntity<Object>("",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<Object>("", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

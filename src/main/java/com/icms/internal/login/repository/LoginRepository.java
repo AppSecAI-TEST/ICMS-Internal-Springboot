@@ -40,6 +40,7 @@ public class LoginRepository
 
     public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
+
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
 
         // String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";

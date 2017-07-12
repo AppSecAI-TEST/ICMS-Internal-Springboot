@@ -35,4 +35,10 @@ public class RegistrationSettingsService {
         return this.registrationSettingsRepository.getCurrentRegistrationWindowRange();
     }
 
+
+    public boolean dataBaseCleanUp() throws SQLException
+    {
+        return this.registrationSettingsRepository.dataBaseCleanUp();
+    }
+
 }

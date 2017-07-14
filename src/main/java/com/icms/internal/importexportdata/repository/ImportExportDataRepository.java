@@ -360,48 +360,55 @@ public class ImportExportDataRepository
 
     private Boolean isExcelValid(String filePath) throws Exception
     {
-        FileInputStream excelFile = new FileInputStream(new File(filePath));
-        Workbook workbook = new XSSFWorkbook(excelFile);
-        Sheet datatypeSheet = workbook.getSheetAt(0);
-        Iterator<Row> iterator = datatypeSheet.iterator();
-
-
-        //Check if the sheet contains 2 cells as expected.
-        Row firstRow = iterator.next();
-        String Candidate_ID = firstRow.getCell(0).getStringCellValue();
-        String Aptitude_Marks = firstRow.getCell(1).getStringCellValue();
-
-
-        if (Candidate_ID.equalsIgnoreCase("Candidate_ID") && Aptitude_Marks.equalsIgnoreCase("Aptitude_Marks"))
+        try
         {
-            //clear previous values in list
-            this.listToWrite.clear();
+            FileInputStream excelFile = new FileInputStream(new File(filePath));
+            Workbook workbook = new XSSFWorkbook(excelFile);
+            Sheet datatypeSheet = workbook.getSheetAt(0);
+            Iterator<Row> iterator = datatypeSheet.iterator();
 
-            //Check if each cell has data in proper format
-            while (iterator.hasNext())
+
+            //Check if the sheet contains 2 cells as expected.
+            Row firstRow = iterator.next();
+            String Candidate_ID = firstRow.getCell(0).getStringCellValue();
+            String Aptitude_Marks = firstRow.getCell(1).getStringCellValue();
+
+
+            if (Candidate_ID.equalsIgnoreCase("Candidate_ID") && Aptitude_Marks.equalsIgnoreCase("Aptitude_Marks"))
             {
-                Row currentRow = iterator.next();
-                int cellNos = 1;
+                //clear previous values in list
+                this.listToWrite.clear();
 
-                try{
-                    ++cellNos;
-                    int candidateId = (int) currentRow.getCell(0).getNumericCellValue();
-                    int aptiMarks = (int) currentRow.getCell(1).getNumericCellValue();
+                //Check if each cell has data in proper format
+                while (iterator.hasNext())
+                {
+                    Row currentRow = iterator.next();
+                    int cellNos = 1;
 
-                    this.listToWrite.put(candidateId,aptiMarks);
+                    try
+                    {
+                        ++cellNos;
+                        int candidateId = (int) currentRow.getCell(0).getNumericCellValue();
+                        int aptiMarks = (int) currentRow.getCell(1).getNumericCellValue();
 
-                    System.out.println(candidateId + "\t" + aptiMarks);
+                        this.listToWrite.put(candidateId, aptiMarks);
+
+                        System.out.println(candidateId + "\t" + aptiMarks);
+                    } catch (Exception ex)
+                    {
+                        throw new Exception("Unable to parse file error occurred on row : " + cellNos);
+                    }
                 }
-                catch (Exception ex){
-                    throw new Exception("Unable to parse file error occurred on row : " + cellNos );
-                }
+                return true;
             }
-            return true;
+            else
+            {
+                //columns are not properly mapped throwing error.
+                throw new Exception("Invalid Columns in sheet. The first column in sheet should be Candidate_ID , Aptitude_Marks ");
+            }
         }
-        else
-        {
-            //columns are not properly mapped throwing error.
-            throw new Exception("Invalid Columns in sheet. The first column in sheet should be Candidate_ID , Aptitude_Marks ");
+        catch (Exception ex){
+            throw new Exception("Invalid Excel file !");
         }
 
     }

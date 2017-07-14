@@ -91,8 +91,8 @@ public class LoginRepository
         }
         catch (LDAPException e)
         {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            //System.out.println(e.getMessage());
+            //e.printStackTrace();
         }
 
         return false;

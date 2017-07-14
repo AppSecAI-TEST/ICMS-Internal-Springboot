@@ -354,7 +354,7 @@ public class ImportExportDataRepository
     {
         String sql = "delete from InterviewMaster";
         this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.executeUpdate();
+        this.preparedStatement.execute();
     }
 
 

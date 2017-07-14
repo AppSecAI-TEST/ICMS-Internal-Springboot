@@ -67,7 +67,7 @@ public class RegistrationSettingsRepository {
 
         String sql = "insert into OldRegistrationCandidateMaster select * from CandidateMaster";
         this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.executeUpdate();
+        this.preparedStatement.execute();
     }
 
     private boolean clearCandidateMaster() throws SQLException {
@@ -76,13 +76,19 @@ public class RegistrationSettingsRepository {
         //Clear records from Candidate master
         String sql = "delete from CandidateMaster";
         this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.executeUpdate();
+        this.preparedStatement.execute();
+
+
+        //Clear records from Interview Master
+        sql ="DELETE  from InterviewMaster";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+        this.preparedStatement.execute();
 
 
         //Reset the CandidateRegId (Pk) to 10001
         sql = "DBCC CHECKIDENT ('CandidateMaster', RESEED, 10000)";
         this.preparedStatement =  this.connection.prepareStatement(sql);
-        this.preparedStatement.executeUpdate();
+        this.preparedStatement.execute();
 
         //check if there are no rows in the candidateMaster table DB
         sql = "select count (*) as Candidate_Records from CandidateMaster";

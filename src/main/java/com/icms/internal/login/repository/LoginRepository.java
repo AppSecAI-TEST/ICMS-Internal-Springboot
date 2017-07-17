@@ -38,10 +38,12 @@ public class LoginRepository
         this.applicationContext = applicationContext;
     }
 
-    public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
+    // doLoginFor Production
+
+    /*public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
 
-        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());R
 
         // String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
         String sql = "select * from LoginInfo where Login_name = ?";
@@ -57,6 +59,41 @@ public class LoginRepository
 
 
         if (resultSet.next() && this.doLdapLogin(loginForm))
+        {
+            String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
+            String token = Base64Utils.encodeToString(usernamePassword.getBytes());
+            loginResponse.setAuthToken(token);
+            loginResponse.setUsername(resultSet.getString("Login_Name"));
+            loginResponse.setAuthRole(resultSet.getString("Role").trim());
+        }
+        else
+        {
+            loginResponse.setErrorMessage("Invalid Username Password.");
+        }
+
+        return loginResponse;
+    }*/
+
+    // doLogin For Development
+    public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
+    {
+
+        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
+
+        String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
+
+
+        this.preparedStatement = this.connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, loginForm.getUsername().replace("@infocepts.com",""));
+        preparedStatement.setString(2, loginForm.getPassword());
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        LoginResponse loginResponse = this.applicationContext.getBean(LoginResponse.class);
+
+
+
+        if (resultSet.next())
         {
             String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
             String token = Base64Utils.encodeToString(usernamePassword.getBytes());

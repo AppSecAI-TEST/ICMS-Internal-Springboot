@@ -85,10 +85,17 @@ public class RegistrationSettingsRepository {
         this.preparedStatement.execute();
 
 
-        //Reset the CandidateRegId (Pk) to 10001
-        sql = "DBCC CHECKIDENT ('CandidateMaster', RESEED, 10000)";
-        this.preparedStatement =  this.connection.prepareStatement(sql);
-        this.preparedStatement.execute();
+        sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+
+
+        if(this.currentPkValueInCandidateMaster() > 88888)
+        {
+            //Reset the CandidateRegId (Pk) to 10001
+            sql = "DBCC CHECKIDENT ('CandidateMaster', RESEED, 10000)";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.execute();
+        }
 
         //check if there are no rows in the candidateMaster table DB
         sql = "select count (*) as Candidate_Records from CandidateMaster";
@@ -102,6 +109,22 @@ public class RegistrationSettingsRepository {
         }
 
         return false;
+    }
+
+
+    private int currentPkValueInCandidateMaster() throws SQLException
+    {
+        String sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
+
+        this.preparedStatement = this.connection.prepareStatement(sql);
+
+        ResultSet resultSet = this.preparedStatement.executeQuery();
+
+        if(resultSet.next()){
+            return resultSet.getInt("pkValue");
+        }
+
+        return  0;
     }
 
     public boolean dataBaseCleanUp() throws SQLException

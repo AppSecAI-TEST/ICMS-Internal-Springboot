@@ -393,7 +393,7 @@ public class ImportExportDataRepository
 
                         this.listToWrite.put(candidateId, aptiMarks);
 
-                        System.out.println(candidateId + "\t" + aptiMarks);
+                        //System.out.println(candidateId + "\t" + aptiMarks);
                     } catch (Exception ex)
                     {
                         throw new Exception("Unable to parse file error occurred on row : " + cellNos);
@@ -404,7 +404,7 @@ public class ImportExportDataRepository
             else
             {
                 //columns are not properly mapped throwing error.
-                throw new Exception("Invalid Columns in sheet. The first column in sheet should be Candidate_ID , Aptitude_Marks ");
+                throw new Exception("Invalid Columns in sheet. The first two column in sheet should be Candidate_ID , Aptitude_Marks ");
             }
         }
         catch (Exception ex){

@@ -40,10 +40,10 @@ public class LoginRepository
 
     // doLoginFor Production
 
-    /*public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
+    public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
 
-        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());R
+        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
 
         // String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
         String sql = "select * from LoginInfo where Login_name = ?";
@@ -72,10 +72,10 @@ public class LoginRepository
         }
 
         return loginResponse;
-    }*/
+    }
 
     // doLogin For Development
-    public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
+    /*public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
 
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -107,7 +107,7 @@ public class LoginRepository
         }
 
         return loginResponse;
-    }
+    }*/
 
     public boolean doLdapLogin(final LoginForm loginForm){
         try

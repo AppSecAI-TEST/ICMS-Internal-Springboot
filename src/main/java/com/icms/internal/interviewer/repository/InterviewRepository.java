@@ -114,7 +114,7 @@ public class InterviewRepository
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.setString(1, technicalInterviewUpdateForm.getTechInterviewClearance());
         this.preparedStatement.setString(2, technicalInterviewUpdateForm.getTechInterviewRemarks());
-        this.preparedStatement.setString(3, interviewerName);
+        this.preparedStatement.setString(3, interviewerName.replace("@infocepts.com",""));
         this.preparedStatement.setString(4, dtf.format(now));
         this.preparedStatement.setString(5, technicalInterviewUpdateForm.getCandidateId());
 
@@ -134,7 +134,7 @@ public class InterviewRepository
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.setString(1, hrInterviewUpdateForm.getHrInterviewClearance());
         this.preparedStatement.setString(2, hrInterviewUpdateForm.getHrInterviewRemarks());
-        this.preparedStatement.setString(3, interviewerName);
+        this.preparedStatement.setString(3, interviewerName.replace("@infocepts.com",""));
         this.preparedStatement.setString(4, dtf.format(now));
         this.preparedStatement.setString(5, hrInterviewUpdateForm.getCandidateId());
 

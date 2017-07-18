@@ -31,7 +31,6 @@ public class CollegeController
 
     @PostMapping("/Add")
     public ResponseEntity<Boolean> addNewCollege(@RequestBody final CollegeInfoForm collegeInfoForm) throws SQLException {
-
         return new ResponseEntity<>(this.collegeService.addNewCollege(collegeInfoForm), HttpStatus.OK);
     }
 

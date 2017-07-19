@@ -80,11 +80,6 @@
 			<artifactId>poi-scratchpad</artifactId>
 			<version>3.16</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>3.16</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -92,12 +87,6 @@
 			<version>1.0-beta</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.unboundid</groupId>
-			<artifactId>unboundid-ldapsdk</artifactId>
-			<version>4.0.0</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>com.unboundid</groupId>
 			<artifactId>unboundid-ldapsdk</artifactId>

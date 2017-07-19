@@ -25,7 +25,7 @@ import java.sql.SQLException;
 public class LoginRepository
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginRepository.class);
 
     private final Connection connection;
     private final ApplicationContext applicationContext;

@@ -2,6 +2,7 @@ package com.icms.internal.sendmail.repository;
 import com.icms.internal.DbConfig.DbConfig;
 import com.icms.internal.sendmail.mailsenderutils.MailSenderUtil;
 import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
+import com.icms.internal.sendmail.model.SendMailToCollegesForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,18 +77,43 @@ public class SendMailRepository
 
         while (resultSet.next()){
             MailSenderUtil mailSenderUtil = this.applicationContext.getBean(MailSenderUtil.class);
-            String college_email = resultSet.getString("College_Email");
-            String tpo_email = resultSet.getString("College_TpoEmail");
+            String collegeEmail = resultSet.getString("College_Email");
+            String tpoEmail = resultSet.getString("College_TpoEmail");
             String subject = sendMailToCollegesAtLocationForm.getMailSubject();
             String mailBody = sendMailToCollegesAtLocationForm.getMailBody();
 
-            new Thread(() -> mailSenderUtil.sendMailToCollegeAndTpo(college_email, tpo_email, subject , mailBody)).start();
+            new Thread(() -> mailSenderUtil.sendMailToCollegeAndTpo(collegeEmail, tpoEmail, subject , mailBody)).start();
 
         }
     }
 
 
-    public void sendMailToColleges(List<String> collegeList){
+    public void sendMailToColleges(SendMailToCollegesForm sendMailToCollegesForm) throws SQLException
+    {
+
+        List<String> collegeIdList = sendMailToCollegesForm.getColleges();
+
+        for(String collegeId : collegeIdList ){
+
+            String sql = "  select College_Email, College_TpoEmail from CollegeInfo where College_ID = ?";
+
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.setString(1,collegeId);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                String collegeEmail = resultSet.getString("College_Email");
+                String tpoEmail = resultSet.getString("College_TpoEmail");
+                String subject = sendMailToCollegesForm.getMailSubject();
+                String mailBody = sendMailToCollegesForm.getMailBody();
+
+                MailSenderUtil mailSenderUtil = this.applicationContext.getBean(MailSenderUtil.class);
+
+                new Thread(() -> mailSenderUtil.sendMailToCollegeAndTpo(collegeEmail, tpoEmail, subject , mailBody)).start();
+
+            }
+
+        }
         
     }
 

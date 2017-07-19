@@ -1,5 +1,8 @@
 package com.icms.internal.sendmail.mailsenderutils;
 
+import com.icms.internal.interviewer.contoller.InterviewContoller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +24,8 @@ import java.util.Properties;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class MailSenderUtil
 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailSenderUtil.class);
 
     private ApplicationContext applicationContext;
 
@@ -103,13 +108,15 @@ public class MailSenderUtil
             // Send the actual HTML message, as big as you like
             message.setContent( mailBody , "text/html");
 
+            LOGGER.debug(String.format("Trying to Send mail To : %s , %s \n MailSubject : %s \n MailBody : %s ", college_email, tpo_email, mailSubject, mailBody));
+
             // Send message
             Transport.send(message);
 
-            System.out.println("Message sent successfully....");
+            LOGGER.info(String.format("Mail Sent Successfully To : %s , %s \n MailSubject : %s \n MailBody : %s ", college_email, tpo_email, mailSubject, mailBody));
 
         }catch (MessagingException mex) {
-            mex.printStackTrace();
+            LOGGER.error(String.format("Mail Sending Failed To : %s , %s \n MailSubject : %s \n MailBody : %s ", college_email, tpo_email, mailSubject, mailBody));
         }
 
     }

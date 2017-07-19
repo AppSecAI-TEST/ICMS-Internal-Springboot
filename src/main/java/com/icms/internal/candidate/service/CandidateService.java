@@ -19,7 +19,7 @@ import java.util.List;
 public class CandidateService
 {
     private CandidateRepository candidateRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewContoller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CandidateService.class);
 
     @Autowired
     public CandidateService (final CandidateRepository candidateRepository)

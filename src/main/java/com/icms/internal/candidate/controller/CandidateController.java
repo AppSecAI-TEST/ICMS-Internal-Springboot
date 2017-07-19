@@ -26,7 +26,7 @@ import java.util.List;
 public class CandidateController
 {
     private CandidateService candidateService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewContoller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CandidateController.class);
 
     @Autowired
     public CandidateController (final CandidateService candidateService)

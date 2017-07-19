@@ -26,7 +26,7 @@ public class CandidateRepository
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
-    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewContoller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CandidateRepository.class);
 
     @Autowired
     public CandidateRepository (final ApplicationContext applicationContext) throws SQLException

@@ -1,6 +1,7 @@
 package com.icms.internal.sendmail.service;
 
 import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
+import com.icms.internal.sendmail.model.SendMailToCollegesForm;
 import com.icms.internal.sendmail.repository.SendMailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,11 @@ public class SendMailService
     public void sendMailToCollegeAtLocation(SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm) throws SQLException
     {
         this.sendMailRepository.sendMailToCollegeAtLocation(sendMailToCollegesAtLocationForm);
+    }
+
+    public void sendMailToColleges(SendMailToCollegesForm sendMailToCollegesForm) throws SQLException
+    {
+        this.sendMailRepository.sendMailToColleges(sendMailToCollegesForm);
     }
 
 

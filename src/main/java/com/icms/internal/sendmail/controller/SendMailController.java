@@ -1,6 +1,7 @@
 package com.icms.internal.sendmail.controller;
 
 import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
+import com.icms.internal.sendmail.model.SendMailToCollegesForm;
 import com.icms.internal.sendmail.service.SendMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,16 +40,17 @@ public class SendMailController
     }
 
     @PostMapping("/ToCollegeAtLocation")
-    public ResponseEntity<?> sendMailToCollegeAtLocation(@RequestBody SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm){
-
-        System.out.println(sendMailToCollegesAtLocationForm);
-
+    public ResponseEntity<?> sendMailToCollegeAtLocation(@RequestBody SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm) throws SQLException
+    {
+        this.sendMailService.sendMailToCollegeAtLocation(sendMailToCollegesAtLocationForm);
         return new ResponseEntity<Object>("", HttpStatus.OK);
     }
 
     @PostMapping("/ToColleges")
-    public void sendMailToCollege(@RequestBody List<String> colleges){
-        System.out.println(colleges);
+    public ResponseEntity<?> sendMailToCollege(@RequestBody SendMailToCollegesForm sendMailToCollegesForm) throws SQLException
+    {
+        this.sendMailService.sendMailToColleges(sendMailToCollegesForm);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
 

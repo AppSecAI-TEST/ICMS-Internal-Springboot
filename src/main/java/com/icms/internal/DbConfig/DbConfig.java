@@ -19,7 +19,7 @@ import java.sql.SQLException;
 public class DbConfig
 {
     private static Connection connection = null;
-    private static final Logger LOGGER = LoggerFactory.getLogger(InterviewContoller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbConfig.class);
 
     static
     {

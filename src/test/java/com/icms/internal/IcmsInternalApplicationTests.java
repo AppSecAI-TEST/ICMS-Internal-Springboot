@@ -19,13 +19,13 @@ public class IcmsInternalApplicationTests {
 	@Test
 	public void contextLoads() throws Exception
 	{
-        LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com",389,"rragashe","Wei3d.4pps");
-
-        if(ldapConnection.isConnected()){
-            System.out.println("Connected");
-        } else {
-            System.out.println("Not connected");
-        }
+//        LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com",389,"rragashe","Wei3d.4pps");
+//
+//        if(ldapConnection.isConnected()){
+//            System.out.println("Connected");
+//        } else {
+//            System.out.println("Not connected");
+//        }
 
 	}
 

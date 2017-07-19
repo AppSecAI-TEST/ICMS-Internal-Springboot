@@ -28,10 +28,17 @@ public class SendMailService
         return this.sendMailRepository.getCollegeCities();
     }
 
+    public List<String> getCollegeNames() throws SQLException
+    {
+        return this.sendMailRepository.getCollegeNames();
+    }
+
     public void sendMailToCollegeAtLocation(SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm) throws SQLException
     {
         this.sendMailRepository.sendMailToCollegeAtLocation(sendMailToCollegesAtLocationForm);
     }
+
+
 
 
 }

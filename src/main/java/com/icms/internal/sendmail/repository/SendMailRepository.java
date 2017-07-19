@@ -47,6 +47,25 @@ public class SendMailRepository
         return collegeLocations;
     }
 
+    public List<String> getCollegeNames() throws SQLException
+    {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
+        String sql = "select College_name from CollegeInfo order by College_Name";
+        this.preparedStatement = this.connection.prepareStatement(sql);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        List collegeList =new ArrayList();
+
+        while (resultSet.next()){
+            String collegeName = resultSet.getString("College_Name");
+            collegeList.add(collegeName);
+        }
+
+        return collegeList;
+    }
+
     public void sendMailToCollegeAtLocation(SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm) throws SQLException
     {
         String sql = "select College_Email, College_TpoEmail from CollegeInfo where College_City = ?";

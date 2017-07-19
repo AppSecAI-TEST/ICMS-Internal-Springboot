@@ -33,6 +33,11 @@ public class SendMailController
         return new ResponseEntity<>(this.sendMailService.getCollegeCities(), HttpStatus.OK );
     }
 
+    @GetMapping("/CollegeNames")
+    public ResponseEntity<List<String>> getCollegeNames() throws SQLException {
+        return new ResponseEntity<>(this.sendMailService.getCollegeNames(), HttpStatus.OK);
+    }
+
     @PostMapping("/ToCollegeAtLocation")
     public ResponseEntity<?> sendMailToCollegeAtLocation(@RequestBody SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm){
 
@@ -44,6 +49,7 @@ public class SendMailController
     @PostMapping("/ToColleges")
     public void sendMailToCollege(@RequestBody List<String> colleges){
         System.out.println(colleges);
-
     }
+
+
 }

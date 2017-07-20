@@ -30,6 +30,8 @@ public class EditCollegeInfoRepository {
 
     public Boolean updateCollegeInfo(CollegeEditForm collegeEditForm) throws SQLException {
 
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "update CollegeInfo set College_Tier = ? , College_Address = ?, College_PhoneNumber = ? , College_Email =? , College_TpoName= ?, College_TpoPhoneNumber= ?, College_TpoEmail = ? where College_ID = ?";
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.setInt(1, collegeEditForm.getCollegeTier());

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
+import sun.rmi.runtime.Log;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -105,6 +106,7 @@ public class InterviewRepository
     public boolean updateTechnicalInterviewDetails (final TechnicalInterviewUpdateForm technicalInterviewUpdateForm, final String interviewerName) throws SQLException
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info("Updating candidate Technical Interview status to : "+technicalInterviewUpdateForm + "Interviewer Name : "+ interviewerName);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -118,13 +120,20 @@ public class InterviewRepository
         this.preparedStatement.setString(4, dtf.format(now));
         this.preparedStatement.setString(5, technicalInterviewUpdateForm.getCandidateId());
 
-        return this.preparedStatement.executeUpdate() > 0;
+        if ( this.preparedStatement.executeUpdate() > 0 ){
+            LOGGER.info("Technical Interview information updated in DB");
+            return true;
+        } else {
+            LOGGER.info("Technical Interview information not updated in DB");
+            return false;
+        }
 
     }
 
     public boolean updateHrInterviewDetails (final HrInterviewUpdateForm hrInterviewUpdateForm, final String interviewerName) throws SQLException
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.info("Updating candidate HR Interview status to : "+hrInterviewUpdateForm + "Interviewer Name : "+ interviewerName);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -138,7 +147,13 @@ public class InterviewRepository
         this.preparedStatement.setString(4, dtf.format(now));
         this.preparedStatement.setString(5, hrInterviewUpdateForm.getCandidateId());
 
-        return this.preparedStatement.executeUpdate() > 0;
+        if ( this.preparedStatement.executeUpdate() > 0 ){
+            LOGGER.info("HR interview information updated in DB");
+            return true;
+        } else {
+            LOGGER.info("HR interview information not updated in DB");
+            return false;
+        }
 
     }
 }

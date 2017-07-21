@@ -1,6 +1,6 @@
 package com.icms.internal.editcollegeinfo.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.editcollegeinfo.model.CollegeEditForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

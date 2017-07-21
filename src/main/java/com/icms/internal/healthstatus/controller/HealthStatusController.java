@@ -1,6 +1,6 @@
-package com.icms.internal.HealthStatus.controller;
+package com.icms.internal.healthstatus.controller;
 
-import com.icms.internal.HealthStatus.service.HealthStatusService;
+import com.icms.internal.healthstatus.service.HealthStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,11 @@ public class HealthStatusController {
     private HealthStatusService healthStatusService;
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthStatusController.class);
 
+    @GetMapping("/isDbUp")
+    public ResponseEntity<?> isDbUp(){
+
+        return new ResponseEntity<Object>("",this.healthStatusService.isDbUp() ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR );
+    }
 
     @Autowired
     public HealthStatusController(HealthStatusService healthStatusService) {
@@ -32,12 +37,14 @@ public class HealthStatusController {
 
     @GetMapping("/totalCandidatesRegistered")
     public ResponseEntity<String> getTotalCandidatesRegistered() throws SQLException {
+
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return new ResponseEntity<>(this.healthStatusService.getTotalCandidatesRegistered(), HttpStatus.OK);
     }
 
     @GetMapping("/totalCandidatesToInterview")
     public ResponseEntity<String> getTotalCandidatesToInterview() throws SQLException{
+
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return new ResponseEntity<>( this.healthStatusService.getTotalCandidatesToInterview() , HttpStatus.OK);
     }

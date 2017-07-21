@@ -1,6 +1,6 @@
 package com.icms.internal.importexportdata.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -120,7 +120,7 @@ public class ImportExportDataRepository
             try{
                 String fileName = "Registered_CandidatesInfo_" + todaysDate +".xlsx";
                 String directory = System.getProperty("java.io.tmpdir");
-                String filePath = directory+fileName;
+                String filePath = directory+"/"+fileName;
                 System.out.println(filePath);
                 FileOutputStream out = new FileOutputStream(new File(filePath));
                 workbook.write(out);

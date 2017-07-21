@@ -1,9 +1,10 @@
-package com.icms.internal.HealthStatus.service;
+package com.icms.internal.healthstatus.service;
 
-import com.icms.internal.HealthStatus.repository.HealthStatusRepository;
+import com.icms.internal.healthstatus.repository.HealthStatusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -40,5 +41,10 @@ public class HealthStatusService {
     public String getTotalCandidatesSelected() throws SQLException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return this.healthStatusRepository.getTotalCandidatesSelected();
+    }
+
+    public Boolean isDbUp ()
+    {
+        return this.healthStatusRepository.isDbUp();
     }
 }

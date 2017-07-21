@@ -1,6 +1,5 @@
-package com.icms.internal.DbConfig;
+package com.icms.internal.dbconfig;
 
-import com.icms.internal.interviewer.contoller.InterviewContoller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;

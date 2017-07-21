@@ -1,6 +1,6 @@
 package com.icms.internal.registrationsettings.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.registrationsettings.model.RegistrationWindowDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * Created by matth on 7/1/2017.

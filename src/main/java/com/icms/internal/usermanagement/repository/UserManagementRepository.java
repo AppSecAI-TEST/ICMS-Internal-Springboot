@@ -1,6 +1,6 @@
 package com.icms.internal.usermanagement.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.usermanagement.model.AddUserForm;
 import com.icms.internal.usermanagement.model.ROLE;
 import com.icms.internal.usermanagement.model.UserInfoAndRole;

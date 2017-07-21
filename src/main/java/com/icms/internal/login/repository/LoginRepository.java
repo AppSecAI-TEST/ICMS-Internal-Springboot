@@ -1,7 +1,6 @@
 package com.icms.internal.login.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
-import com.icms.internal.login.controller.LoginController;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.login.models.LoginForm;
 import com.icms.internal.login.models.LoginResponse;
 import com.unboundid.ldap.sdk.LDAPConnection;

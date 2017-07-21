@@ -1,7 +1,7 @@
-package com.icms.internal.HealthStatus.repository;
+package com.icms.internal.healthstatus.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
-import com.icms.internal.interviewer.contoller.InterviewContoller;
+import com.icms.internal.dbconfig.DbConfig;
+import com.sun.org.apache.bcel.internal.generic.RET;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ import java.sql.SQLException;
 @Repository
 public class HealthStatusRepository {
 
-    private final Connection connection;
-    private final ApplicationContext applicationContext;
+    private Connection connection = null;
+    private ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthStatusRepository.class);
 
@@ -82,5 +82,10 @@ public class HealthStatusRepository {
             return resultSet.getString("total_candidates_selected");
         }
         return null;
+    }
+
+    public Boolean isDbUp ()
+    {
+        return this.connection == null ;
     }
 }

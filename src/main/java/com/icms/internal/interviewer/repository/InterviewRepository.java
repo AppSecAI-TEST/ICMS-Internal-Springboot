@@ -1,6 +1,6 @@
 package com.icms.internal.interviewer.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.interviewer.model.HrInterviewUpdateForm;
 import com.icms.internal.interviewer.model.InterviewCandidiateInfo;
 import com.icms.internal.interviewer.model.TechnicalInterviewUpdateForm;
@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
-import sun.rmi.runtime.Log;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,7 +1,6 @@
 package com.icms.internal.candidate.repopsitory;
 
-import com.icms.internal.DbConfig.DbConfig;
-import com.icms.internal.interviewer.contoller.InterviewContoller;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.candidate.model.CandidateInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

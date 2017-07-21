@@ -1,23 +1,15 @@
 package com.icms.internal.college.repository;
 
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.college.model.CollegeInfo;
 import com.icms.internal.college.model.CollegeInfoForm;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -61,7 +53,7 @@ public class CollegeRepository
 
     public void add() throws SQLException
     {
-//        Connection connection = DbConfig.getInstance();
+//        Connection connection = dbconfig.getInstance();
 //        String sql = " insert into CountryCityInfo values ( ? ,? )";
 //        PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
 //

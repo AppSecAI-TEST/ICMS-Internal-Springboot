@@ -1,5 +1,5 @@
 package com.icms.internal.sendmail.repository;
-import com.icms.internal.DbConfig.DbConfig;
+import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.sendmail.mailsenderutils.MailSenderUtil;
 import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
 import com.icms.internal.sendmail.model.SendMailToCollegesForm;

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/UserManagement")
+@RequestMapping("/api/v1/admin/UserManagement")
 public class UserManagementController
 {
     private UserManagementService userManagementService;

@@ -16,7 +16,7 @@ import java.text.ParseException;
  */
 @RestController
 @CrossOrigin
-@RequestMapping ("/api/v1/RegistrationSetting")
+@RequestMapping ("/api/v1/admin/RegistrationSetting")
 public class RegistrationSettingsContoller {
 
     private RegistrationSettingsService registrationSettingsService;

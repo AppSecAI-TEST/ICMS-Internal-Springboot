@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @CrossOrigin
-@RequestMapping("/api/v1/SendMail")
+@RequestMapping("/api/v1/admin/SendMail")
 public class SendMailController
 {
     private SendMailService sendMailService;

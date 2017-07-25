@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/CandidateInterviewStatus")
+@RequestMapping("/api/v1/admin/CandidateInterviewStatus")
 public class CandidateInterviewStatusController
 {
     private CandidateInterviewStatusService candidateInterviewStatusService;

@@ -18,7 +18,7 @@ import java.sql.SQLException;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1/HealthStatus")
+@RequestMapping("/api/v1/admin/HealthStatus")
 public class HealthStatusController {
 
     private HealthStatusService healthStatusService;

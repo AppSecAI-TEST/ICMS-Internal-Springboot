@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/api/v1/EditCollegeInfo")
+@RequestMapping("/api/v1/admin/EditCollegeInfo")
 public class EditCollegeInfoController {
 
     private EditCollegeInfoService editCollegeInfoService;

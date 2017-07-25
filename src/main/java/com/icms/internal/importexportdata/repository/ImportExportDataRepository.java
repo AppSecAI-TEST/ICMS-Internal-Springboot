@@ -116,6 +116,8 @@ public class ImportExportDataRepository
                 c9.setCellValue( Long.parseLong( resultSet.getString( "Candidate_Phone")) );
             }
 
+            resultSet.close();
+
 
             try{
                 String fileName = "Registered_CandidatesInfo_" + todaysDate +".xlsx";
@@ -330,17 +332,21 @@ public class ImportExportDataRepository
             //Clear old records from table
             this.clearOldDataInInterviewTable();
 
-            this.connection.setAutoCommit(false);
+            //this.connection.setAutoCommit(false);
             String sql = "insert into InterviewMaster (Candidate_Id, Candidate_AptitudeMarks) values (?,?)";
             this.preparedStatement = this.connection.prepareStatement(sql);
 
             for (Map.Entry<Integer, Integer> entry : this.listToWrite.entrySet()){
                 this.preparedStatement.setInt(1,entry.getKey());
                 this.preparedStatement.setInt(2,entry.getValue());
-                this.preparedStatement.addBatch();
+                this.preparedStatement.executeUpdate();
             }
-            this.preparedStatement.executeBatch();
-            this.connection.commit();
+
+
+            //this.connection.commit();
+
+            this.preparedStatement.close();
+
             return true;
 
         }

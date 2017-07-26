@@ -1,4 +1,4 @@
-package com.icms.internal.sharedApi.repository;
+package com.icms.internal.sharedapi.repository;
 
 import com.icms.internal.dbconfig.DbConfig;
 import org.springframework.beans.factory.annotation.Autowired;

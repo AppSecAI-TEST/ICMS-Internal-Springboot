@@ -1,6 +1,7 @@
-package com.icms.internal.sharedApi.controller;
+package com.icms.internal.sharedapi.controller;
 
-import com.icms.internal.sharedApi.service.SharedApiService;
+
+import com.icms.internal.sharedapi.service.SharedApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

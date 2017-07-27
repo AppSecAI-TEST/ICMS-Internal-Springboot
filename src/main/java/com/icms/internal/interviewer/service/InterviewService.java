@@ -36,8 +36,6 @@ public class InterviewService
 
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        //todo perform validation checks over here
-
         return this.interviewRepository.updateTechnicalInterviewDetails(technicalInterviewUpdateForm, interviewerName);
     }
 
@@ -45,8 +43,6 @@ public class InterviewService
     public boolean updateHrInterviewDetails (final HrInterviewUpdateForm hrInterviewUpdateForm, final String interviewername) throws SQLException
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
-
-        //todo perform validation checks over here
 
         return this.interviewRepository.updateHrInterviewDetails(hrInterviewUpdateForm, interviewername);
     }

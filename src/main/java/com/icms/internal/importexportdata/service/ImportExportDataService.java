@@ -1,6 +1,8 @@
 package com.icms.internal.importexportdata.service;
 
 import com.icms.internal.importexportdata.repository.ImportExportDataRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class ImportExportDataService
 {
     private ApplicationContext applicationContext;
     private ImportExportDataRepository importExportDataRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImportExportDataService.class);
 
     @Autowired
     public ImportExportDataService (final ApplicationContext applicationContext, final ImportExportDataRepository importExportDataRepository)
@@ -30,12 +33,14 @@ public class ImportExportDataService
 
     public String downloadRegisteredCandidateExcel () throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return this.importExportDataRepository.downloadRegisteredCandidateExcel();
     }
 
 
     public Boolean interviewFileUpload (MultipartFile file) throws Exception
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         if (file.isEmpty())
         {
@@ -63,6 +68,7 @@ public class ImportExportDataService
     }
 
     public String downloadInterviewedCandidateExcel() {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return this.importExportDataRepository.downloadInterviewedCandidateExcel();
     }
 }

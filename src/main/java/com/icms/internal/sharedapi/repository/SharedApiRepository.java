@@ -1,6 +1,8 @@
 package com.icms.internal.sharedapi.repository;
 
 import com.icms.internal.dbconfig.DbConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,7 @@ public class SharedApiRepository
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SharedApiRepository.class);
 
     @Autowired
     public SharedApiRepository (final ApplicationContext applicationContext) throws SQLException
@@ -28,6 +31,8 @@ public class SharedApiRepository
 
     public List<String> getCountryList () throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select Distinct(Country_Name) from CountryCityInfo order by Country_Name";
 
         Statement statement = this.connection.createStatement();
@@ -45,6 +50,8 @@ public class SharedApiRepository
 
     public List<String> getCityList (String countryName) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = String.format("select City_Name from CountryCityInfo where Country_Name = '%s' order by City_Name", countryName);
 
         Statement statement = this.connection.createStatement();

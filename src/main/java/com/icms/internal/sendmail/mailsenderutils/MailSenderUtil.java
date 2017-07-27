@@ -56,6 +56,8 @@ public class MailSenderUtil
 
     public void sendMail(String to, String mailSubject, String mailBody ) {
 
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         try {
             // Create a default MimeMessage object.
             MimeMessage message = new MimeMessage(session);
@@ -85,6 +87,8 @@ public class MailSenderUtil
     }
 
     public void sendMailToCollegeAndTpo(String college_email , String tpo_email, String mailSubject, String mailBody ) {
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         try {
             // Create a default MimeMessage object.

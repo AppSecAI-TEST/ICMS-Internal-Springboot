@@ -1,9 +1,12 @@
 package com.icms.internal.college.repository;
 
+import com.icms.internal.candidate.controller.CandidateController;
 import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.college.model.CollegeInfo;
 import com.icms.internal.college.model.CollegeInfoForm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -21,6 +24,7 @@ public class CollegeRepository
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CollegeRepository.class);
 
     @Autowired
     public CollegeRepository (final ApplicationContext applicationContext) throws SQLException
@@ -32,7 +36,7 @@ public class CollegeRepository
     public boolean addNewCollege(CollegeInfoForm collegeInfoForm) throws SQLException
     {
 
-        System.out.println(collegeInfoForm);
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         String sql = "INSERT INTO CollegeInfo values (?,?,?,?,?,?,?,?,?,?)";
 
@@ -112,6 +116,8 @@ public class CollegeRepository
     }
 
     public List<CollegeInfo> getAllCollegeList() throws SQLException {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select * from CollegeInfo order by College_Name";
 
         Statement statement = this.connection.createStatement();

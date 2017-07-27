@@ -37,6 +37,7 @@ public class UserManagementRepository
 
     public List<UserInfoAndRole> getAllUsers() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         String sql = "select Login_name, Role from LoginInfo where Login_name != 'Admin'";
         this.preparedStatement = this.connection.prepareStatement(sql);
         ResultSet resultSet = this.preparedStatement.executeQuery();
@@ -66,6 +67,7 @@ public class UserManagementRepository
 
     public boolean addNewUser(final AddUserForm addUserForm) throws SQLException {
 
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
          for( UserInfoAndRole userInfoAndRole : this.getAllUsers() ){
              if(userInfoAndRole.getUsername().equalsIgnoreCase( addUserForm.getUserEmail())){
@@ -91,6 +93,8 @@ public class UserManagementRepository
 
 
     public boolean deleteUser(final String username) throws SQLException {
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         String sql = "delete from LoginInfo where Login_name = ?";
         this.preparedStatement = this.connection.prepareStatement(sql);

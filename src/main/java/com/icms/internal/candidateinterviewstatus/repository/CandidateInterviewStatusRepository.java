@@ -36,6 +36,8 @@ public class CandidateInterviewStatusRepository
 
     public List<CandidatesInterviewStatus> getInterviewStatusForAll() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select im.Candidate_ID, cm.Candidate_FirstName, cm.Candidate_LastName, im.Candidate_TechnicalClearance, im.Candidate_TechnicalInterviewer, im.Candidate_HrClearance, im.Candidate_HrInterviewer from InterviewMaster as im left join CandidateMaster as cm on im.Candidate_Id = cm.Candidate_ID";
 
         this.preparedStatement = this.connection.prepareStatement(sql);

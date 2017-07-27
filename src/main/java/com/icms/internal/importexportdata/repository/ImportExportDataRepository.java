@@ -5,6 +5,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -24,10 +26,13 @@ import java.util.*;
 @Repository
 public class ImportExportDataRepository
 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImportExportDataRepository.class);
     private final Connection connection;
     private final ApplicationContext applicationContext;
     TreeMap<Integer, Integer> listToWrite = new TreeMap<>();
     private PreparedStatement preparedStatement = null;
+
 
     @Autowired
     public ImportExportDataRepository (final ApplicationContext applicationContext) throws SQLException
@@ -39,6 +44,8 @@ public class ImportExportDataRepository
     @SuppressWarnings("Duplicates")
     public String downloadRegisteredCandidateExcel() throws SQLException
     {
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         Date date = new Date();
@@ -149,6 +156,8 @@ public class ImportExportDataRepository
 
     @SuppressWarnings("Duplicates")
     public String downloadInterviewedCandidateExcel() {
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         Date date = new Date();
@@ -327,6 +336,8 @@ public class ImportExportDataRepository
 
     public boolean insertDataInInterviewDB(String filePath) throws Exception
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         if(this.isExcelValid(filePath) && (!this.listToWrite.isEmpty())) {
 
             //Clear old records from table
@@ -358,6 +369,8 @@ public class ImportExportDataRepository
 
     private void clearOldDataInInterviewTable() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "delete from InterviewMaster";
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.execute();
@@ -366,6 +379,8 @@ public class ImportExportDataRepository
 
     private Boolean isExcelValid(String filePath) throws Exception
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         try
         {
             FileInputStream excelFile = new FileInputStream(new File(filePath));

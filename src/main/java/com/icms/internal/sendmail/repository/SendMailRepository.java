@@ -35,6 +35,8 @@ public class SendMailRepository
 
     public List<String> getCollegeCities() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select Distinct(College_City) from CollegeInfo order by College_City;";
         this.preparedStatement = this.connection.prepareStatement(sql);
 
@@ -69,6 +71,8 @@ public class SendMailRepository
 
     public void sendMailToCollegeAtLocation(SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select College_Email, College_TpoEmail from CollegeInfo where College_City = ?";
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.setString(1,sendMailToCollegesAtLocationForm.getCity());
@@ -90,6 +94,7 @@ public class SendMailRepository
 
     public void sendMailToColleges(SendMailToCollegesForm sendMailToCollegesForm) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         List<String> collegeIdList = sendMailToCollegesForm.getColleges();
 

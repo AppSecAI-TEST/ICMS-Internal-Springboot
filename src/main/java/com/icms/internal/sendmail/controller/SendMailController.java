@@ -3,6 +3,8 @@ package com.icms.internal.sendmail.controller;
 import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
 import com.icms.internal.sendmail.model.SendMailToCollegesForm;
 import com.icms.internal.sendmail.service.SendMailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/v1/admin/SendMail")
 public class SendMailController
 {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendMailController.class);
     private SendMailService sendMailService;
 
     @Autowired
@@ -31,17 +34,20 @@ public class SendMailController
     @GetMapping("/collegeLocations")
     public ResponseEntity<List<String>> getCollegeCities() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return new ResponseEntity<>(this.sendMailService.getCollegeCities(), HttpStatus.OK );
     }
 
     @GetMapping("/CollegeNames")
     public ResponseEntity<List<String>> getCollegeNames() throws SQLException {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         return new ResponseEntity<>(this.sendMailService.getCollegeNames(), HttpStatus.OK);
     }
 
     @PostMapping("/ToCollegeAtLocation")
     public ResponseEntity<?> sendMailToCollegeAtLocation(@RequestBody SendMailToCollegesAtLocationForm sendMailToCollegesAtLocationForm) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         this.sendMailService.sendMailToCollegeAtLocation(sendMailToCollegesAtLocationForm);
         return new ResponseEntity<Object>("", HttpStatus.OK);
     }
@@ -49,6 +55,7 @@ public class SendMailController
     @PostMapping("/ToColleges")
     public ResponseEntity<?> sendMailToCollege(@RequestBody SendMailToCollegesForm sendMailToCollegesForm) throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
         this.sendMailService.sendMailToColleges(sendMailToCollegesForm);
         return new ResponseEntity<>("", HttpStatus.OK);
     }

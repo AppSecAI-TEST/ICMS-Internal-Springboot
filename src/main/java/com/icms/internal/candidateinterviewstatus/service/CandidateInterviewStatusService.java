@@ -1,7 +1,10 @@
 package com.icms.internal.candidateinterviewstatus.service;
 
+import com.icms.internal.candidateinterviewstatus.controller.CandidateInterviewStatusController;
 import com.icms.internal.candidateinterviewstatus.model.CandidatesInterviewStatus;
 import com.icms.internal.candidateinterviewstatus.repository.CandidateInterviewStatusRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.List;
 public class CandidateInterviewStatusService
 {
     private CandidateInterviewStatusRepository candidateInterviewStatusRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CandidateInterviewStatusService.class);
 
     @Autowired
     public CandidateInterviewStatusService (final CandidateInterviewStatusRepository candidateInterviewStatusRepository)
@@ -24,6 +28,8 @@ public class CandidateInterviewStatusService
 
     public List<CandidatesInterviewStatus> getInterviewStatusForAll() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         return this.candidateInterviewStatusRepository.getInterviewStatusForAll();
     }
 }

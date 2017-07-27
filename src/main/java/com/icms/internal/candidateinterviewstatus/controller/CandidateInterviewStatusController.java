@@ -1,7 +1,10 @@
 package com.icms.internal.candidateinterviewstatus.controller;
 
+import com.icms.internal.candidate.controller.CandidateController;
 import com.icms.internal.candidateinterviewstatus.model.CandidatesInterviewStatus;
 import com.icms.internal.candidateinterviewstatus.service.CandidateInterviewStatusService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import java.util.List;
 public class CandidateInterviewStatusController
 {
     private CandidateInterviewStatusService candidateInterviewStatusService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CandidateInterviewStatusController.class);
 
     @Autowired
     public CandidateInterviewStatusController (final CandidateInterviewStatusService candidateInterviewStatusService)
@@ -32,6 +36,8 @@ public class CandidateInterviewStatusController
     @GetMapping("/All")
     public ResponseEntity<List<CandidatesInterviewStatus>> getInterviewStatusForAll() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         return new ResponseEntity<> (this.candidateInterviewStatusService.getInterviewStatusForAll(), HttpStatus.OK);
     }
 }

@@ -1,6 +1,8 @@
 package com.icms.internal.importexportdata.controller;
 
 import com.icms.internal.importexportdata.service.ImportExportDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ public class ImportExportDataController
 {
 
     private ImportExportDataService importExportDataService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImportExportDataController.class);
 
     @Autowired
     public ImportExportDataController (final ImportExportDataService importExportDataService)
@@ -38,6 +41,8 @@ public class ImportExportDataController
     @SuppressWarnings("Duplicates")
     public void downloadRegisteredCandidateExcel(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String filePath = this.importExportDataService.downloadRegisteredCandidateExcel();
 
         if( null == filePath)
@@ -60,6 +65,8 @@ public class ImportExportDataController
     @SuppressWarnings("Duplicates")
     public void downloadInterviewedCandidateExcel(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String filePath = this.importExportDataService.downloadInterviewedCandidateExcel();
 
         if( null == filePath)
@@ -79,6 +86,9 @@ public class ImportExportDataController
 
     @PostMapping("/upload")
     public ResponseEntity<String> interviewFileUpload(@RequestParam("excelToUpload") MultipartFile file) throws Exception {
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         if(this.importExportDataService.interviewFileUpload(file)){
             return new ResponseEntity<>("Data uploaded Successfully", HttpStatus.OK);
         } else{

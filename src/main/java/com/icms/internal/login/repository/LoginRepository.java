@@ -38,7 +38,6 @@ public class LoginRepository
     }
 
     // doLoginFor Production
-/*
     public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
 
@@ -72,9 +71,9 @@ public class LoginRepository
 
         return loginResponse;
     }
-*/
+
     // doLogin For Development
-    public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
+    /* public LoginResponse doLogin (final LoginForm loginForm) throws SQLException
     {
 
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -106,12 +105,14 @@ public class LoginRepository
         }
 
         return loginResponse;
-    }
+    }*/
 
-    public boolean doLdapLogin(final LoginForm loginForm){
+    private boolean doLdapLogin(final LoginForm loginForm){
+
+        LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
+
         try
         {
-
             String uname = loginForm.getUsername();
 
             if( ! loginForm.getUsername().toLowerCase().contains("@infocepts.com"))
@@ -119,7 +120,7 @@ public class LoginRepository
 
             LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com", 389, uname, loginForm.getPassword());
 
-            if(ldapConnection.isConnected()){
+            if (ldapConnection.isConnected()){
                 return true;
             } else {
                 return false;
@@ -127,8 +128,7 @@ public class LoginRepository
         }
         catch (LDAPException e)
         {
-            //System.out.println(e.getMessage());
-            //e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return false;

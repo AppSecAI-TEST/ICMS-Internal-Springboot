@@ -32,8 +32,8 @@ public class AuthorizationFilter extends OncePerRequestFilter
         try
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=CampusConnect", "PreRecDB", "PreRecDB");
-            //connection = DriverManager.getConnection("jdbc:sqlserver://10.10.5.85;databaseName=CampusConnect", "cconnect", "C0NN3C!@$32");
+             //connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=CampusConnect", "PreRecDB", "PreRecDB");
+            connection = DriverManager.getConnection("jdbc:sqlserver://10.10.5.85;databaseName=CampusConnect", "cconnect", "C0NN3C!@$32");
         }
         catch (ClassNotFoundException | SQLException e)
         {
@@ -71,18 +71,25 @@ public class AuthorizationFilter extends OncePerRequestFilter
 
             String authToken = httpServletRequest.getHeader("authToken");
 
-            System.out.println(authToken);
-
-            String base64Decoded = new String(Base64Utils.decode(authToken.getBytes()));
-
-            String username = base64Decoded.split(":")[0];
-
-            if (this.authorizationList.get(username).equalsIgnoreCase("A")) {
-                filterChain.doFilter(httpServletRequest, httpServletResponse);
-            } else {
-                LOGGER.error(String.format("%s tried to access %s url", username, requestUrl));
-                LOGGER.error("Sending Unauthorized error");
+            if(null == authToken){
                 httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+            } else
+            {
+
+                String base64Decoded = new String(Base64Utils.decode(authToken.getBytes()));
+
+                String username = base64Decoded.split(":")[0];
+
+                if (this.authorizationList.get(username).equalsIgnoreCase("A"))
+                {
+                    filterChain.doFilter(httpServletRequest, httpServletResponse);
+                }
+                else
+                {
+                    LOGGER.error(String.format("%s tried to access %s url", username, requestUrl));
+                    LOGGER.error("Sending Unauthorized error");
+                    httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+                }
             }
         } else {
             filterChain.doFilter(httpServletRequest, httpServletResponse);

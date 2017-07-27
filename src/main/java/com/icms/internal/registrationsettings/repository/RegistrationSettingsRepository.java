@@ -2,6 +2,8 @@ package com.icms.internal.registrationsettings.repository;
 
 import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.registrationsettings.model.RegistrationWindowDates;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,7 @@ public class RegistrationSettingsRepository {
     private final Connection connection;
     private final ApplicationContext applicationContext;
     private PreparedStatement preparedStatement = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationSettingsRepository.class);
 
     @Autowired
     public RegistrationSettingsRepository (final ApplicationContext applicationContext) throws SQLException
@@ -28,6 +31,8 @@ public class RegistrationSettingsRepository {
     }
 
     public RegistrationWindowDates getCurrentRegistrationWindowRange() throws SQLException, ParseException {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select CONVERT(VARCHAR(16),RegistrationWindowStartDate,106) as RegistrationWindowStartDate , CONVERT(VARCHAR(20),RegistrationWindowEndDate,106) as RegistrationWindowEndDate from RegistrationWindowSetting where SettingId = 101";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
@@ -47,7 +52,8 @@ public class RegistrationSettingsRepository {
 
 
     public boolean saveRegistrationWindowDates( final String startDate, final String endDate ) throws SQLException, ParseException {
-        //System.out.println(startDate + "-" + endDate);
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         String sql = "update RegistrationWindowSetting set RegistrationWindowStartDate = ?,  RegistrationWindowEndDate= ? where SettingId = 101 ";
 
@@ -64,6 +70,8 @@ public class RegistrationSettingsRepository {
 
     private void backupCandidateMaster()throws SQLException {
 
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "insert into OldRegistrationCandidateMaster select * from CandidateMaster";
         this.preparedStatement = this.connection.prepareStatement(sql);
         this.preparedStatement.execute();
@@ -71,6 +79,7 @@ public class RegistrationSettingsRepository {
 
     private boolean clearCandidateMaster() throws SQLException {
 
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
         //Clear records from Candidate master
         String sql = "delete from CandidateMaster";
@@ -113,6 +122,8 @@ public class RegistrationSettingsRepository {
 
     private int currentPkValueInCandidateMaster() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         String sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
@@ -128,6 +139,8 @@ public class RegistrationSettingsRepository {
 
     public boolean dataBaseCleanUp() throws SQLException
     {
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
         this.backupCandidateMaster();
         return this.clearCandidateMaster();
     }

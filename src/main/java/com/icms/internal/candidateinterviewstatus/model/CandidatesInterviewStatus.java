@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class CandidatesInterviewStatus
 {
     private String candidateId;
+    private String candidateRegTimeStamp;
     private String candidateName;
     private String candidateLastName;
     private String candidateTechnicalClearance;
@@ -27,6 +28,16 @@ public class CandidatesInterviewStatus
     public void setCandidateId (final String candidateId)
     {
         this.candidateId = candidateId;
+    }
+
+    public String getCandidateRegTimeStamp ()
+    {
+        return candidateRegTimeStamp;
+    }
+
+    public void setCandidateRegTimeStamp (final String candidateRegTimeStamp)
+    {
+        this.candidateRegTimeStamp = candidateRegTimeStamp;
     }
 
     public String getCandidateName ()
@@ -94,6 +105,7 @@ public class CandidatesInterviewStatus
     {
         return "CandidatesInterviewStatus{" +
                 "candidateId='" + candidateId + '\'' +
+                ", candidateRegTimeStamp='" + candidateRegTimeStamp + '\'' +
                 ", candidateName='" + candidateName + '\'' +
                 ", candidateLastName='" + candidateLastName + '\'' +
                 ", candidateTechnicalClearance='" + candidateTechnicalClearance + '\'' +

@@ -38,7 +38,7 @@ public class CandidateInterviewStatusRepository
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select im.Candidate_ID, cm.Candidate_FirstName, cm.Candidate_LastName, im.Candidate_TechnicalClearance, im.Candidate_TechnicalInterviewer, im.Candidate_HrClearance, im.Candidate_HrInterviewer from InterviewMaster as im left join CandidateMaster as cm on im.Candidate_Id = cm.Candidate_ID";
+        String sql = "select im.Candidate_ID, cm.Candidate_CreatedTimestamp, cm.Candidate_FirstName, cm.Candidate_LastName, im.Candidate_TechnicalClearance, im.Candidate_TechnicalInterviewer, im.Candidate_HrClearance, im.Candidate_HrInterviewer from InterviewMaster as im left join CandidateMaster as cm on im.Candidate_Id = cm.Candidate_ID";
 
         this.preparedStatement = this.connection.prepareStatement(sql);
 
@@ -51,6 +51,7 @@ public class CandidateInterviewStatusRepository
             CandidatesInterviewStatus candidatesInterviewStatus = this.applicationContext.getBean(CandidatesInterviewStatus.class);
 
             candidatesInterviewStatus.setCandidateId(resultSet.getString("Candidate_ID"));
+            candidatesInterviewStatus.setCandidateRegTimeStamp(resultSet.getString("Candidate_CreatedTimestamp"));
             candidatesInterviewStatus.setCandidateName(resultSet.getString("Candidate_FirstName"));
             candidatesInterviewStatus.setCandidateLastName(resultSet.getString("Candidate_LastName"));
             candidatesInterviewStatus.setCandidateTechnicalClearance(resultSet.getString("Candidate_TechnicalClearance"));

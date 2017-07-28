@@ -1,6 +1,5 @@
 package com.icms.internal.candidateinterviewstatus.controller;
 
-import com.icms.internal.candidate.controller.CandidateController;
 import com.icms.internal.candidateinterviewstatus.model.CandidatesInterviewStatus;
 import com.icms.internal.candidateinterviewstatus.service.CandidateInterviewStatusService;
 import org.slf4j.Logger;

@@ -43,33 +43,33 @@ public class LoginRepository
 
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-        // String sql = "select * from LoginInfo where Login_name = ? and Login_Password = ?";
-        String sql = "select * from LoginInfo where Login_name = ?";
-
-        this.preparedStatement = this.connection.prepareStatement(sql);
-
-        preparedStatement.setString(1, loginForm.getUsername().replace("@infocepts.com",""));
-        //preparedStatement.setString(2, loginForm.getPassword());
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        LoginResponse loginResponse = this.applicationContext.getBean(LoginResponse.class);
-
-
-
-        if (resultSet.next() && this.doLdapLogin(loginForm))
+        synchronized (LoginRepository.class)
         {
-            String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
-            String token = Base64Utils.encodeToString(usernamePassword.getBytes());
-            loginResponse.setAuthToken(token);
-            loginResponse.setUsername(resultSet.getString("Login_Name"));
-            loginResponse.setAuthRole(resultSet.getString("Role").trim());
-        }
-        else
-        {
-            loginResponse.setErrorMessage("Invalid Username Password.");
-        }
+            String sql = "select * from LoginInfo where Login_name = ?";
 
-        return loginResponse;
+            this.preparedStatement = this.connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, loginForm.getUsername().replace("@infocepts.com", ""));
+            //preparedStatement.setString(2, loginForm.getPassword());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            LoginResponse loginResponse = this.applicationContext.getBean(LoginResponse.class);
+
+
+            if (resultSet.next() && this.doLdapLogin(loginForm))
+            {
+                String usernamePassword = loginForm.getUsername() + ":" + loginForm.getPassword();
+                String token = Base64Utils.encodeToString(usernamePassword.getBytes());
+                loginResponse.setAuthToken(token);
+                loginResponse.setUsername(resultSet.getString("Login_Name"));
+                loginResponse.setAuthRole(resultSet.getString("Role").trim());
+            }
+            else
+            {
+                loginResponse.setErrorMessage("Invalid Username Password.");
+            }
+            return loginResponse;
+        }
     }
 
     // doLogin For Development
@@ -111,26 +111,25 @@ public class LoginRepository
 
         LOGGER.debug(">> " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-        try
+        synchronized (LoginRepository.class)
         {
-            String uname = loginForm.getUsername();
 
-            if( ! loginForm.getUsername().toLowerCase().contains("@infocepts.com"))
-                 uname += "@infocepts.com";
+            try
+            {
+                String uname = loginForm.getUsername();
 
-            LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com", 389, uname, loginForm.getPassword());
+                if (!loginForm.getUsername().toLowerCase().contains("@infocepts.com"))
+                    uname += "@infocepts.com";
 
-            if (ldapConnection.isConnected()){
-                return true;
-            } else {
-                return false;
+                LDAPConnection ldapConnection = new LDAPConnection("info-srv11.infocepts.com", 389, uname, loginForm.getPassword());
+
+                return ldapConnection.isConnected();
+            } catch (LDAPException e)
+            {
+                LOGGER.error(e.getMessage());
             }
-        }
-        catch (LDAPException e)
-        {
-            LOGGER.error(e.getMessage());
-        }
 
-        return false;
+            return false;
+        }
     }
 }

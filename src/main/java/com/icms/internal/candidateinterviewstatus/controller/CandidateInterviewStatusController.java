@@ -2,6 +2,7 @@ package com.icms.internal.candidateinterviewstatus.controller;
 
 import com.icms.internal.candidateinterviewstatus.model.CandidatesInterviewStatus;
 import com.icms.internal.candidateinterviewstatus.service.CandidateInterviewStatusService;
+import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
+@CacheControl (maxAge = 0)
 @RequestMapping("/api/v1/admin/CandidateInterviewStatus")
 public class CandidateInterviewStatusController
 {

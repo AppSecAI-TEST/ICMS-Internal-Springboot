@@ -38,30 +38,34 @@ public class CandidateInterviewStatusRepository
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select im.Candidate_ID, cm.Candidate_CreatedTimestamp, cm.Candidate_FirstName, cm.Candidate_LastName, im.Candidate_TechnicalClearance, im.Candidate_TechnicalInterviewer, im.Candidate_HrClearance, im.Candidate_HrInterviewer from InterviewMaster as im left join CandidateMaster as cm on im.Candidate_Id = cm.Candidate_ID";
+        synchronized (CandidateInterviewStatusRepository.class)
+        {
+            String sql = "select im.Candidate_ID, cm.Candidate_CreatedTimestamp, cm.Candidate_FirstName, cm.Candidate_LastName, im.Candidate_TechnicalClearance, im.Candidate_TechnicalInterviewer, im.Candidate_HrClearance, im.Candidate_HrInterviewer from InterviewMaster as im left join CandidateMaster as cm on im.Candidate_Id = cm.Candidate_ID";
 
-        this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement = this.connection.prepareStatement(sql);
 
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        List<CandidatesInterviewStatus> candidatesInterviewStatusList = new ArrayList<>();
+            List<CandidatesInterviewStatus> candidatesInterviewStatusList = new ArrayList<>();
 
-        while (resultSet.next()){
+            while (resultSet.next())
+            {
 
-            CandidatesInterviewStatus candidatesInterviewStatus = this.applicationContext.getBean(CandidatesInterviewStatus.class);
+                CandidatesInterviewStatus candidatesInterviewStatus = this.applicationContext.getBean(CandidatesInterviewStatus.class);
 
-            candidatesInterviewStatus.setCandidateId(resultSet.getString("Candidate_ID"));
-            candidatesInterviewStatus.setCandidateRegTimeStamp(resultSet.getString("Candidate_CreatedTimestamp"));
-            candidatesInterviewStatus.setCandidateName(resultSet.getString("Candidate_FirstName"));
-            candidatesInterviewStatus.setCandidateLastName(resultSet.getString("Candidate_LastName"));
-            candidatesInterviewStatus.setCandidateTechnicalClearance(resultSet.getString("Candidate_TechnicalClearance"));
-            candidatesInterviewStatus.setCandidateTechnicalInterviewer(resultSet.getString("Candidate_TechnicalInterviewer"));
-            candidatesInterviewStatus.setCandidateHrClearance(resultSet.getString("Candidate_HrClearance"));
-            candidatesInterviewStatus.setCandidateHrInterviewer(resultSet.getString("Candidate_HrInterviewer"));
+                candidatesInterviewStatus.setCandidateId(resultSet.getString("Candidate_ID"));
+                candidatesInterviewStatus.setCandidateRegTimeStamp(resultSet.getString("Candidate_CreatedTimestamp"));
+                candidatesInterviewStatus.setCandidateName(resultSet.getString("Candidate_FirstName"));
+                candidatesInterviewStatus.setCandidateLastName(resultSet.getString("Candidate_LastName"));
+                candidatesInterviewStatus.setCandidateTechnicalClearance(resultSet.getString("Candidate_TechnicalClearance"));
+                candidatesInterviewStatus.setCandidateTechnicalInterviewer(resultSet.getString("Candidate_TechnicalInterviewer"));
+                candidatesInterviewStatus.setCandidateHrClearance(resultSet.getString("Candidate_HrClearance"));
+                candidatesInterviewStatus.setCandidateHrInterviewer(resultSet.getString("Candidate_HrInterviewer"));
 
-            candidatesInterviewStatusList.add(candidatesInterviewStatus);
+                candidatesInterviewStatusList.add(candidatesInterviewStatus);
+            }
+
+            return candidatesInterviewStatusList;
         }
-
-        return candidatesInterviewStatusList;
     }
 }

@@ -33,38 +33,48 @@ public class RegistrationSettingsRepository {
     public RegistrationWindowDates getCurrentRegistrationWindowRange() throws SQLException, ParseException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select CONVERT(VARCHAR(16),RegistrationWindowStartDate,106) as RegistrationWindowStartDate , CONVERT(VARCHAR(20),RegistrationWindowEndDate,106) as RegistrationWindowEndDate from RegistrationWindowSetting where SettingId = 101";
+        synchronized (RegistrationSettingsRepository.class)
+        {
 
-        this.preparedStatement = this.connection.prepareStatement(sql);
+            String sql = "select CONVERT(VARCHAR(16),RegistrationWindowStartDate,106) as RegistrationWindowStartDate , CONVERT(VARCHAR(20),RegistrationWindowEndDate,106) as RegistrationWindowEndDate from RegistrationWindowSetting where SettingId = 101";
 
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+            this.preparedStatement = this.connection.prepareStatement(sql);
 
-        RegistrationWindowDates registrationWindowDates = this.applicationContext.getBean(RegistrationWindowDates.class);
-        if(resultSet.next()){
-            registrationWindowDates.setStartDate(resultSet.getString("RegistrationWindowStartDate"));
-            registrationWindowDates.setEndDate(resultSet.getString("RegistrationWindowEndDate"));
+            ResultSet resultSet = this.preparedStatement.executeQuery();
+
+            RegistrationWindowDates registrationWindowDates = this.applicationContext.getBean(RegistrationWindowDates.class);
+            if (resultSet.next())
+            {
+                registrationWindowDates.setStartDate(resultSet.getString("RegistrationWindowStartDate"));
+                registrationWindowDates.setEndDate(resultSet.getString("RegistrationWindowEndDate"));
+            }
+
+            return registrationWindowDates;
         }
-
-
-        return registrationWindowDates;
 
     }
 
 
-    public boolean saveRegistrationWindowDates( final String startDate, final String endDate ) throws SQLException, ParseException {
+    public boolean saveRegistrationWindowDates( final String startDate, final String endDate ) throws SQLException, ParseException
+    {
 
-        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.debug(">> " + new Object()
+        {
+        }.getClass().getEnclosingMethod().getName());
 
-        String sql = "update RegistrationWindowSetting set RegistrationWindowStartDate = ?,  RegistrationWindowEndDate= ? where SettingId = 101 ";
+        synchronized (RegistrationSettingsRepository.class)
+        {
+            String sql = "update RegistrationWindowSetting set RegistrationWindowStartDate = ?,  RegistrationWindowEndDate= ? where SettingId = 101 ";
 
-        Date startDt =  new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(startDate).getTime());
-        Date endDt =   new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(endDate).getTime());
+            Date startDt = new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(startDate).getTime());
+            Date endDt = new java.sql.Date(new SimpleDateFormat("dd/MM/yyyy").parse(endDate).getTime());
 
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.setDate(1,startDt);
-        this.preparedStatement.setDate(2,endDt);
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.setDate(1, startDt);
+            this.preparedStatement.setDate(2, endDt);
 
-        return   this.preparedStatement.executeUpdate() == 1;
+            return this.preparedStatement.executeUpdate() == 1;
+        }
     }
 
 
@@ -72,51 +82,56 @@ public class RegistrationSettingsRepository {
 
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "insert into OldRegistrationCandidateMaster select * from CandidateMaster";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.execute();
+        synchronized (RegistrationSettingsRepository.class)
+        {
+            String sql = "insert into OldRegistrationCandidateMaster select * from CandidateMaster";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.execute();
+        }
     }
 
     private boolean clearCandidateMaster() throws SQLException {
 
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        //Clear records from Candidate master
-        String sql = "delete from CandidateMaster";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.execute();
-
-
-        //Clear records from Interview Master
-        sql ="DELETE  from InterviewMaster";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.execute();
-
-
-        sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-
-
-        if(this.currentPkValueInCandidateMaster() > 88888)
+        synchronized (RegistrationSettingsRepository.class)
         {
-            //Reset the CandidateRegId (Pk) to 10001
-            sql = "DBCC CHECKIDENT ('CandidateMaster', RESEED, 10000)";
+            //Clear records from Candidate master
+            String sql = "delete from CandidateMaster";
             this.preparedStatement = this.connection.prepareStatement(sql);
             this.preparedStatement.execute();
+
+
+            //Clear records from Interview Master
+            sql = "DELETE  from InterviewMaster";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.execute();
+
+
+            sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+
+
+            if (this.currentPkValueInCandidateMaster() > 88888)
+            {
+                //Reset the CandidateRegId (Pk) to 10001
+                sql = "DBCC CHECKIDENT ('CandidateMaster', RESEED, 10000)";
+                this.preparedStatement = this.connection.prepareStatement(sql);
+                this.preparedStatement.execute();
+            }
+
+            //check if there are no rows in the candidateMaster table DB
+            sql = "select count (*) as Candidate_Records from CandidateMaster";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+
+            ResultSet resultSet = this.preparedStatement.executeQuery();
+            if (resultSet.next())
+            {
+                int rows = resultSet.getInt("Candidate_Records");
+                return rows == 0;
+            }
+            return false;
         }
-
-        //check if there are no rows in the candidateMaster table DB
-        sql = "select count (*) as Candidate_Records from CandidateMaster";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-
-        ResultSet resultSet = this.preparedStatement.executeQuery();
-        if(resultSet.next())
-        {
-            int rows = resultSet.getInt("Candidate_Records");
-            return rows == 0;
-        }
-
-        return false;
     }
 
 
@@ -124,25 +139,33 @@ public class RegistrationSettingsRepository {
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
+        synchronized (RegistrationSettingsRepository.class)
+        {
+            String sql = "select IDENT_CURRENT('CandidateMaster') as pkValue";
 
-        this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement = this.connection.prepareStatement(sql);
 
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        if(resultSet.next()){
-            return resultSet.getInt("pkValue");
+            if (resultSet.next())
+            {
+                return resultSet.getInt("pkValue");
+            }
+
+            return 0;
         }
-
-        return  0;
     }
 
     public boolean dataBaseCleanUp() throws SQLException
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        this.backupCandidateMaster();
-        return this.clearCandidateMaster();
+        synchronized (RegistrationSettingsRepository.class)
+        {
+
+            this.backupCandidateMaster();
+            return this.clearCandidateMaster();
+        }
     }
 
 }

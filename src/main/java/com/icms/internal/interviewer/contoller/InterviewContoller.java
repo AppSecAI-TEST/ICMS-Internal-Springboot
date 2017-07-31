@@ -5,6 +5,7 @@ import com.icms.internal.interviewer.model.InterviewCandidiateInfo;
 import com.icms.internal.interviewer.model.RegistrationId;
 import com.icms.internal.interviewer.model.TechnicalInterviewUpdateForm;
 import com.icms.internal.interviewer.service.InterviewService;
+import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
  */
 @RestController
 @CrossOrigin
+@CacheControl (maxAge = 0)
 @RequestMapping ("/api/v1/Interviewer")
 public class InterviewContoller
 {

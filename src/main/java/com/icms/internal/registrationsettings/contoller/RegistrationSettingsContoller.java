@@ -3,6 +3,7 @@ package com.icms.internal.registrationsettings.contoller;
 import com.icms.internal.registrationsettings.model.DateRangeForm;
 import com.icms.internal.registrationsettings.model.RegistrationWindowDates;
 import com.icms.internal.registrationsettings.service.RegistrationSettingsService;
+import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.text.ParseException;
  */
 @RestController
 @CrossOrigin
+@CacheControl (maxAge = 0)
 @RequestMapping ("/api/v1/admin/RegistrationSetting")
 public class RegistrationSettingsContoller {
 

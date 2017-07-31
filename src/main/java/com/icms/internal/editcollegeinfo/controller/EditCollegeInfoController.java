@@ -2,6 +2,7 @@ package com.icms.internal.editcollegeinfo.controller;
 
 import com.icms.internal.editcollegeinfo.model.CollegeEditForm;
 import com.icms.internal.editcollegeinfo.service.EditCollegeInfoService;
+import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 
 @Controller
 @CrossOrigin
+@CacheControl (maxAge = 0)
 @RequestMapping("/api/v1/admin/EditCollegeInfo")
 public class EditCollegeInfoController {
 

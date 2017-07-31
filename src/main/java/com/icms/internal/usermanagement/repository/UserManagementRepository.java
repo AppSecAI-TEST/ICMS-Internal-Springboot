@@ -1,6 +1,7 @@
 package com.icms.internal.usermanagement.repository;
 
 import com.icms.internal.dbconfig.DbConfig;
+import com.icms.internal.registrationsettings.repository.RegistrationSettingsRepository;
 import com.icms.internal.usermanagement.model.AddUserForm;
 import com.icms.internal.usermanagement.model.ROLE;
 import com.icms.internal.usermanagement.model.UserInfoAndRole;
@@ -38,69 +39,98 @@ public class UserManagementRepository
     public List<UserInfoAndRole> getAllUsers() throws SQLException
     {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
-        String sql = "select Login_name, Role from LoginInfo where Login_name != 'Admin'";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        List<UserInfoAndRole> userInfoAndRoleList = new ArrayList<>();
+        synchronized (UserManagementRepository.class)
+        {
+            String sql = "select Login_name, Role from LoginInfo where Login_name != 'Admin'";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        while (resultSet.next()){
-            UserInfoAndRole userInfoAndRole =  this.applicationContext.getBean(UserInfoAndRole.class);
+            List<UserInfoAndRole> userInfoAndRoleList = new ArrayList<>();
 
-            userInfoAndRole.setUsername(resultSet.getString("Login_name"));
-            String role = resultSet.getString("Role");
+            while (resultSet.next())
+            {
+                UserInfoAndRole userInfoAndRole = this.applicationContext.getBean(UserInfoAndRole.class);
 
-            if(role.equalsIgnoreCase("A")){
-                userInfoAndRole.setRole(ROLE.Admin);
-            } else if(role.equalsIgnoreCase("H")){
-                userInfoAndRole.setRole(ROLE.HR);
-            } else {
-                userInfoAndRole.setRole(ROLE.INTERVIEWER);
+                userInfoAndRole.setUsername(resultSet.getString("Login_name"));
+                String role = resultSet.getString("Role");
+
+                if (role.equalsIgnoreCase("A"))
+                {
+                    userInfoAndRole.setRole(ROLE.Admin);
+                }
+                else if (role.equalsIgnoreCase("H"))
+                {
+                    userInfoAndRole.setRole(ROLE.HR);
+                }
+                else
+                {
+                    userInfoAndRole.setRole(ROLE.INTERVIEWER);
+                }
+
+                userInfoAndRoleList.add(userInfoAndRole);
+            }
+            return userInfoAndRoleList;
+        }
+
+    }
+
+    public boolean addNewUser(final AddUserForm addUserForm) throws SQLException
+    {
+
+        LOGGER.debug(">> " + new Object()
+        {
+        }.getClass().getEnclosingMethod().getName());
+        synchronized (UserManagementRepository.class)
+        {
+
+            for (UserInfoAndRole userInfoAndRole : this.getAllUsers())
+            {
+                if (userInfoAndRole.getUsername().equalsIgnoreCase(addUserForm.getUserEmail()))
+                {
+                    throw new SQLException("User Already Exists.");
+                }
             }
 
-            userInfoAndRoleList.add(userInfoAndRole);
+            String sql = "insert into LoginInfo (Login_name, Role) values (?,?)";
+
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.setString(1, addUserForm.getUserEmail());
+
+            if (addUserForm.getRole().equalsIgnoreCase("A"))
+            {
+                this.preparedStatement.setString(2, "A");
+            }
+            else if (addUserForm.getRole().equalsIgnoreCase("H"))
+            {
+                this.preparedStatement.setString(2, "H");
+            }
+            else
+            {
+                this.preparedStatement.setString(2, "I");
+            }
+
+            return this.preparedStatement.executeUpdate() > 0;
         }
-
-        return userInfoAndRoleList;
-
-    }
-
-    public boolean addNewUser(final AddUserForm addUserForm) throws SQLException {
-
-        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
-
-         for( UserInfoAndRole userInfoAndRole : this.getAllUsers() ){
-             if(userInfoAndRole.getUsername().equalsIgnoreCase( addUserForm.getUserEmail())){
-                 throw new SQLException("User Already Exists.");
-             }
-         }
-
-        String sql = "insert into LoginInfo (Login_name, Role) values (?,?)";
-
-        this.preparedStatement =  this.connection.prepareStatement(sql);
-        this.preparedStatement.setString(1,addUserForm.getUserEmail());
-
-        if(addUserForm.getRole().equalsIgnoreCase("A")){
-            this.preparedStatement.setString(2,"A");
-        } else if(addUserForm.getRole().equalsIgnoreCase("H")){
-            this.preparedStatement.setString(2,"H");
-        } else {
-            this.preparedStatement.setString(2,"I");
-        }
-
-        return this.preparedStatement.executeUpdate() > 0;
     }
 
 
-    public boolean deleteUser(final String username) throws SQLException {
+    public boolean deleteUser(final String username) throws SQLException
+    {
 
-        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+        LOGGER.debug(">> " + new Object()
+        {
+        }.getClass().getEnclosingMethod().getName());
 
-        String sql = "delete from LoginInfo where Login_name = ?";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.setString(1, username);
+        synchronized (UserManagementRepository.class)
+        {
 
-        return this.preparedStatement.executeUpdate() > 0;
+            String sql = "delete from LoginInfo where Login_name = ?";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.setString(1, username);
+
+            return this.preparedStatement.executeUpdate() > 0;
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.icms.internal.sharedapi.controller;
 
 
 import com.icms.internal.sharedapi.service.SharedApiService;
+import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@CacheControl (maxAge = 0)
 @RequestMapping ("/Shared/api/v1")
 public class SharedApiController
 {

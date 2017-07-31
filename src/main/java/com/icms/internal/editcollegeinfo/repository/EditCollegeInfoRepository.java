@@ -32,18 +32,21 @@ public class EditCollegeInfoRepository {
 
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "update CollegeInfo set College_Tier = ? , College_Address = ?, College_PhoneNumber = ? , College_Email =? , College_TpoName= ?, College_TpoPhoneNumber= ?, College_TpoEmail = ? where College_ID = ?";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.setInt(1, collegeEditForm.getCollegeTier());
-        this.preparedStatement.setString(2, collegeEditForm.getCollegeAddress());
-        this.preparedStatement.setString(3, collegeEditForm.getCollegePhoneNumber());
-        this.preparedStatement.setString(4, collegeEditForm.getCollegeEmail());
-        this.preparedStatement.setString(5, collegeEditForm.getTpoName());
-        this.preparedStatement.setString(6, collegeEditForm.getTpoPhoneNumber());
-        this.preparedStatement.setString(7, collegeEditForm.getTpoEmail());
-        this.preparedStatement.setInt(8, collegeEditForm.getCollegeId());
+        synchronized (EditCollegeInfoRepository.class)
+        {
 
-        return this.preparedStatement.executeUpdate() > 0;
+            String sql = "update CollegeInfo set College_Tier = ? , College_Address = ?, College_PhoneNumber = ? , College_Email =? , College_TpoName= ?, College_TpoPhoneNumber= ?, College_TpoEmail = ? where College_ID = ?";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.setInt(1, collegeEditForm.getCollegeTier());
+            this.preparedStatement.setString(2, collegeEditForm.getCollegeAddress());
+            this.preparedStatement.setString(3, collegeEditForm.getCollegePhoneNumber());
+            this.preparedStatement.setString(4, collegeEditForm.getCollegeEmail());
+            this.preparedStatement.setString(5, collegeEditForm.getTpoName());
+            this.preparedStatement.setString(6, collegeEditForm.getTpoPhoneNumber());
+            this.preparedStatement.setString(7, collegeEditForm.getTpoEmail());
+            this.preparedStatement.setInt(8, collegeEditForm.getCollegeId());
 
+            return this.preparedStatement.executeUpdate() > 0;
+        }
     }
 }

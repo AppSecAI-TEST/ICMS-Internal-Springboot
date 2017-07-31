@@ -34,54 +34,70 @@ public class HealthStatusRepository {
     public String getTotalCandidatesRegistered() throws SQLException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select count (*) as total_candidates from CandidateMaster";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+        synchronized (HealthStatusRepository.class)
+        {
+            String sql = "select count (*) as total_candidates from CandidateMaster";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        while (resultSet.next()){
-            return resultSet.getString("total_candidates");
+            while (resultSet.next())
+            {
+                return resultSet.getString("total_candidates");
+            }
+            return null;
         }
-        return null;
     }
 
     public String getTotalCandidatesToInterview() throws SQLException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select count (*) as total_candidates_to_interview from InterviewMaster";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+        synchronized (HealthStatusRepository.class)
+        {
+            String sql = "select count (*) as total_candidates_to_interview from InterviewMaster";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        while (resultSet.next()){
-            return resultSet.getString("total_candidates_to_interview");
+            while (resultSet.next())
+            {
+                return resultSet.getString("total_candidates_to_interview");
+            }
+            return null;
         }
-        return null;
     }
 
     public String getTotalCandidatesInterviewed() throws SQLException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = " select count(*) as total_candidates_interviewed from InterviewMaster where Candidate_HrClearance is not null and Candidate_TechnicalClearance is not null;";
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+        synchronized (HealthStatusRepository.class)
+        {
+            String sql = " select count(*) as total_candidates_interviewed from InterviewMaster where Candidate_HrClearance is not null and Candidate_TechnicalClearance is not null;";
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        while (resultSet.next()){
-            return resultSet.getString("total_candidates_interviewed");
+            while (resultSet.next())
+            {
+                return resultSet.getString("total_candidates_interviewed");
+            }
+            return null;
         }
-        return null;
     }
 
     public String getTotalCandidatesSelected() throws SQLException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select count(*) as total_candidates_selected from InterviewMaster where Candidate_TechnicalClearance = 'Cleared' and Candidate_HrClearance = 'Cleared'";
+        synchronized (HealthStatusRepository.class)
+        {
+            String sql = "select count(*) as total_candidates_selected from InterviewMaster where Candidate_TechnicalClearance = 'Cleared' and Candidate_HrClearance = 'Cleared'";
 
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        ResultSet resultSet = this.preparedStatement.executeQuery();
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = this.preparedStatement.executeQuery();
 
-        while (resultSet.next()){
-            return resultSet.getString("total_candidates_selected");
+            while (resultSet.next())
+            {
+                return resultSet.getString("total_candidates_selected");
+            }
+            return null;
         }
-        return null;
     }
 
     public Boolean isDbUp ()

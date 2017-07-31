@@ -1,6 +1,7 @@
 package com.icms.internal.college.repository;
 
 import com.icms.internal.candidate.controller.CandidateController;
+import com.icms.internal.candidateinterviewstatus.repository.CandidateInterviewStatusRepository;
 import com.icms.internal.dbconfig.DbConfig;
 import com.icms.internal.college.model.CollegeInfo;
 import com.icms.internal.college.model.CollegeInfoForm;
@@ -35,24 +36,26 @@ public class CollegeRepository
 
     public boolean addNewCollege(CollegeInfoForm collegeInfoForm) throws SQLException
     {
-
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "INSERT INTO CollegeInfo values (?,?,?,?,?,?,?,?,?,?)";
+        synchronized (CollegeRepository.class)
+        {
+            String sql = "INSERT INTO CollegeInfo values (?,?,?,?,?,?,?,?,?,?)";
 
-        this.preparedStatement = this.connection.prepareStatement(sql);
-        this.preparedStatement.setString(1,collegeInfoForm.getCollegeName());
-        this.preparedStatement.setInt(2,collegeInfoForm.getCollegeTier());
-        this.preparedStatement.setString(3,collegeInfoForm.getCollegeAddress());
-        this.preparedStatement.setString(4,collegeInfoForm.getCollegeCountry());
-        this.preparedStatement.setString(5,collegeInfoForm.getCollegeCity());
-        this.preparedStatement.setString(6,collegeInfoForm.getCollegePhoneNumber());
-        this.preparedStatement.setString(7,collegeInfoForm.getCollegeEmail());
-        this.preparedStatement.setString(8,collegeInfoForm.getTpoName());
-        this.preparedStatement.setString(9,collegeInfoForm.getTpoPhoneNumber());
-        this.preparedStatement.setString(10,collegeInfoForm.getTpoEmail());
+            this.preparedStatement = this.connection.prepareStatement(sql);
+            this.preparedStatement.setString(1, collegeInfoForm.getCollegeName());
+            this.preparedStatement.setInt(2, collegeInfoForm.getCollegeTier());
+            this.preparedStatement.setString(3, collegeInfoForm.getCollegeAddress());
+            this.preparedStatement.setString(4, collegeInfoForm.getCollegeCountry());
+            this.preparedStatement.setString(5, collegeInfoForm.getCollegeCity());
+            this.preparedStatement.setString(6, collegeInfoForm.getCollegePhoneNumber());
+            this.preparedStatement.setString(7, collegeInfoForm.getCollegeEmail());
+            this.preparedStatement.setString(8, collegeInfoForm.getTpoName());
+            this.preparedStatement.setString(9, collegeInfoForm.getTpoPhoneNumber());
+            this.preparedStatement.setString(10, collegeInfoForm.getTpoEmail());
 
-        return preparedStatement.executeUpdate() > 0;
+            return preparedStatement.executeUpdate() > 0;
+        }
     }
 
     public void add() throws SQLException
@@ -118,34 +121,34 @@ public class CollegeRepository
     public List<CollegeInfo> getAllCollegeList() throws SQLException {
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
-        String sql = "select * from CollegeInfo order by College_Name";
+        synchronized (CollegeRepository.class)
+        {
+            String sql = "select * from CollegeInfo order by College_Name";
 
-        Statement statement = this.connection.createStatement();
+            Statement statement = this.connection.createStatement();
 
-        ResultSet resultSet = statement.executeQuery(sql);
-        List<CollegeInfo> collegeInfoList = new ArrayList<>();
+            ResultSet resultSet = statement.executeQuery(sql);
+            List<CollegeInfo> collegeInfoList = new ArrayList<>();
 
+            while (resultSet.next())
+            {
+                CollegeInfo collegeInfo = this.applicationContext.getBean(CollegeInfo.class);
+                collegeInfo.setCollegeId(resultSet.getInt("College_Id"));
+                collegeInfo.setCollegeName(resultSet.getString("College_Name"));
+                collegeInfo.setCollegeTier(resultSet.getInt("College_tier"));
+                collegeInfo.setCollegeAddress(resultSet.getString("College_Address"));
+                collegeInfo.setCollegeCountry(resultSet.getString("College_Country"));
+                collegeInfo.setCollegeCity(resultSet.getString("College_City"));
+                collegeInfo.setCollegePhoneNumber(resultSet.getString("College_PhoneNumber"));
+                collegeInfo.setCollegeEmail(resultSet.getString("College_Email"));
+                collegeInfo.setTpoName(resultSet.getString("College_TpoName"));
+                collegeInfo.setTpoEmail(resultSet.getString("College_TpoEmail"));
+                collegeInfo.setTpoPhoneNumber(resultSet.getString("College_TpoPhoneNumber"));
 
-        while (resultSet.next()){
-
-            CollegeInfo collegeInfo = this.applicationContext.getBean(CollegeInfo.class);
-            collegeInfo.setCollegeId(resultSet.getInt("College_Id"));
-            collegeInfo.setCollegeName(resultSet.getString("College_Name"));
-            collegeInfo.setCollegeTier(resultSet.getInt("College_tier"));
-            collegeInfo.setCollegeAddress(resultSet.getString("College_Address"));
-            collegeInfo.setCollegeCountry(resultSet.getString("College_Country"));
-            collegeInfo.setCollegeCity(resultSet.getString("College_City"));
-            collegeInfo.setCollegePhoneNumber(resultSet.getString("College_PhoneNumber"));
-            collegeInfo.setCollegeEmail(resultSet.getString("College_Email"));
-            collegeInfo.setTpoName(resultSet.getString("College_TpoName"));
-            collegeInfo.setTpoEmail(resultSet.getString("College_TpoEmail"));
-            collegeInfo.setTpoPhoneNumber(resultSet.getString("College_TpoPhoneNumber"));
-
-            collegeInfoList.add(collegeInfo);
-
+                collegeInfoList.add(collegeInfo);
+            }
+            return collegeInfoList;
         }
-
-        return collegeInfoList;
     }
 }
 

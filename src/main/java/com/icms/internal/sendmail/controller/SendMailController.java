@@ -3,6 +3,7 @@ package com.icms.internal.sendmail.controller;
 import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
 import com.icms.internal.sendmail.model.SendMailToCollegesForm;
 import com.icms.internal.sendmail.service.SendMailService;
+import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Controller
 @CrossOrigin
+@CacheControl (maxAge = 0)
 @RequestMapping("/api/v1/admin/SendMail")
 public class SendMailController
 {

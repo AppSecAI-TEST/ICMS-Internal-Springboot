@@ -23,3 +23,10 @@ dist/
 nbdist/
 .nb-gradle/
 *.log
+/src/main/resources/static/
+__AppLogs/
+src/main/java/com/icms/internal/importexportdata/model/
+src/main/java/com/icms/internal/sharedapi/model/
+src/main/resources/static/inline.8c7eac8371a27b25c9d0.bundle.js
+src/main/resources/static/main.c859e8b4e25398dee9cc.bundle.js
+src/main/resources/templates/

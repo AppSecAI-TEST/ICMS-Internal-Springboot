@@ -25,7 +25,6 @@ public class AuthorizationFilter extends OncePerRequestFilter
 {
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
     private static Connection connection = null;
-    private Map<String,String> authorizationList = new HashMap<>();
 
     static
     {
@@ -33,7 +32,7 @@ public class AuthorizationFilter extends OncePerRequestFilter
         {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
              //connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=CampusConnect", "PreRecDB", "PreRecDB");
-            connection = DriverManager.getConnection("jdbc:sqlserver://10.10.5.85;databaseName=CampusConnect", "cconnect", "C0NN3C!@$32");
+            connection = DriverManager.getConnection("jdbc:sqlserver://10.10.10.93;databaseName=CampusConnect", "cconnect", "C0NN3C!@$32");
         }
         catch (ClassNotFoundException | SQLException e)
         {
@@ -42,19 +41,25 @@ public class AuthorizationFilter extends OncePerRequestFilter
     }
 
     public AuthorizationFilter() throws SQLException {
+    }
 
-        String sql = "select Login_name , Role from LoginInfo";
+
+    public String getRoleForUser( String username ) throws SQLException
+    {
+        String sql = "select Role from LoginInfo where Login_name = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1,username);
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        while (resultSet.next()){
-            String username = resultSet.getString("Login_name");
-            String role = resultSet.getString("Role");
-
-            authorizationList.put(username,role);
+        if(resultSet.next()){
+            String userRole = resultSet.getString("Role");
+            LOGGER.debug(String.format("Role found. Username %s is %s",username, userRole));
+            return userRole;
         }
+
+        return "";
     }
 
     @Override
@@ -80,15 +85,22 @@ public class AuthorizationFilter extends OncePerRequestFilter
 
                 String username = base64Decoded.split(":")[0];
 
-                if (this.authorizationList.get(username).equalsIgnoreCase("A"))
+                try
                 {
-                    filterChain.doFilter(httpServletRequest, httpServletResponse);
+
+                    if (this.getRoleForUser(username).equalsIgnoreCase("A"))
+                    {
+                        filterChain.doFilter(httpServletRequest, httpServletResponse);
+                    }
+                    else
+                    {
+                        LOGGER.error(String.format("%s tried to access %s url", username, requestUrl));
+                        LOGGER.error("Sending Unauthorized error");
+                        httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+                    }
                 }
-                else
-                {
-                    LOGGER.error(String.format("%s tried to access %s url", username, requestUrl));
-                    LOGGER.error("Sending Unauthorized error");
-                    httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value());
+                catch (SQLException sqlex){
+                    LOGGER.error(sqlex.getMessage());
                 }
             }
         } else {

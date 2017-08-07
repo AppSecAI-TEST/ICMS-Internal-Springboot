@@ -1,8 +1,8 @@
-package com.icms.internal.sendmail.controller;
+package com.icms.internal.sendmailtocolleges.controller;
 
-import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
-import com.icms.internal.sendmail.model.SendMailToCollegesForm;
-import com.icms.internal.sendmail.service.SendMailService;
+import com.icms.internal.sendmailtocolleges.model.SendMailToCollegesAtLocationForm;
+import com.icms.internal.sendmailtocolleges.model.SendMailToCollegesForm;
+import com.icms.internal.sendmailtocolleges.service.SendMailService;
 import net.rossillo.spring.web.mvc.CacheControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

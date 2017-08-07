@@ -1,4 +1,4 @@
-package com.icms.internal.sendmail.model;
+package com.icms.internal.sendmailtocolleges.model;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@CacheControl(maxAge = 0)
+@CacheControl
 @RequestMapping ("/api/v1/admin/Candidate")
 public class CandidateController
 {

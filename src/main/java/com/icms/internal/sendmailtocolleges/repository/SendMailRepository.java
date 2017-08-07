@@ -1,8 +1,8 @@
-package com.icms.internal.sendmail.repository;
+package com.icms.internal.sendmailtocolleges.repository;
 import com.icms.internal.dbconfig.DbConfig;
-import com.icms.internal.sendmail.mailsenderutils.MailSenderUtil;
-import com.icms.internal.sendmail.model.SendMailToCollegesAtLocationForm;
-import com.icms.internal.sendmail.model.SendMailToCollegesForm;
+import com.icms.internal.sendmailtocolleges.mailsenderutils.MailSenderUtil;
+import com.icms.internal.sendmailtocolleges.model.SendMailToCollegesAtLocationForm;
+import com.icms.internal.sendmailtocolleges.model.SendMailToCollegesForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

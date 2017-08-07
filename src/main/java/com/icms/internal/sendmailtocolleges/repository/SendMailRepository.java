@@ -1,6 +1,6 @@
 package com.icms.internal.sendmailtocolleges.repository;
 import com.icms.internal.dbconfig.DbConfig;
-import com.icms.internal.sendmailtocolleges.mailsenderutils.MailSenderUtil;
+import com.icms.internal.mailsenderutils.MailSenderUtil;
 import com.icms.internal.sendmailtocolleges.model.SendMailToCollegesAtLocationForm;
 import com.icms.internal.sendmailtocolleges.model.SendMailToCollegesForm;
 import org.slf4j.Logger;

@@ -1,6 +1,5 @@
-package com.icms.internal.sendmail.mailsenderutils;
+package com.icms.internal.mailsenderutils;
 
-import com.icms.internal.interviewer.contoller.InterviewContoller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -54,7 +55,7 @@ public class MailSenderUtil
     }
 
 
-    public void sendMail(String to, String mailSubject, String mailBody ) {
+    private void sendMail(String to, String mailSubject, String mailBody ) {
 
         LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
 
@@ -67,7 +68,7 @@ public class MailSenderUtil
 
             // Set To: header field of the header.
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
+            //message.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
 
             // Set Subject: header field
             message.setSubject(mailSubject);
@@ -75,13 +76,16 @@ public class MailSenderUtil
             // Send the actual HTML message, as big as you like
            message.setContent( mailBody , "text/html");
 
+            LOGGER.debug(String.format("Trying to Send mail To : %s , \n MailSubject : %s \n MailBody : %s ", to, mailSubject, mailBody));
+
             // Send message
             Transport.send(message);
 
-            System.out.println("Message sent successfully....");
+            LOGGER.info(String.format("Mail Sent Successfully To : %s \n MailSubject : %s \n MailBody : %s ",to, mailSubject, mailBody));
 
         }catch (MessagingException mex) {
-            mex.printStackTrace();
+            LOGGER.error(String.format("Mail Sending Failed To : %s \n MailSubject : %s \n MailBody : %s ", to, mailSubject, mailBody));
+            LOGGER.error(mex.getMessage() + ":" + mex.getCause());
         }
 
     }
@@ -123,6 +127,26 @@ public class MailSenderUtil
             LOGGER.error(String.format("Mail Sending Failed To : %s , %s \n MailSubject : %s \n MailBody : %s ", college_email, tpo_email, mailSubject, mailBody));
         }
 
+    }
+
+    public void sendMailToCandidates (List<String> emailIds , String mailSubject, String mailBody){
+
+        LOGGER.debug(">> "+ new Object(){}.getClass().getEnclosingMethod().getName());
+
+        StringBuilder bodyBuilder = new StringBuilder();
+        bodyBuilder.append(mailBody);
+        bodyBuilder.append(System.getProperty("line.separator"));
+        bodyBuilder.append(System.getProperty("line.separator"));
+        bodyBuilder.append("Above mail Sent to Following Registered Candidates ");
+
+        for(String emailId : emailIds){
+            this.sendMail(emailId, mailSubject, mailBody);
+
+            bodyBuilder.append("<br>");
+            bodyBuilder.append(emailId);
+        }
+
+        this.sendMail("rragashe@infocepts.com","Mail sent to Registered Candidates.",bodyBuilder.toString());
     }
 
 

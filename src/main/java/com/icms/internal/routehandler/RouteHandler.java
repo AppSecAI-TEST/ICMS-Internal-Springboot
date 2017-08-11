@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RouteHandler
 {
-    @RequestMapping ({ "/IcmsLogin", "/ICMS/**" })
+    @RequestMapping ({ "/Login", "/CampusConnect/**" })
     public String index() {
         return "forward:/index.html";
     }

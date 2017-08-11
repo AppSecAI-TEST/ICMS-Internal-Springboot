@@ -146,7 +146,7 @@ public class MailSenderUtil
             bodyBuilder.append(emailId);
         }
 
-        this.sendMail("rragashe@infocepts.com","Mail sent to Registered Candidates.",bodyBuilder.toString());
+        this.sendMail("campusconnect@infocepts.com","Mail sent to Registered Candidates.",bodyBuilder.toString());
     }
 
 

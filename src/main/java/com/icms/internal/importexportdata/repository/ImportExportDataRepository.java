@@ -310,7 +310,7 @@ public class ImportExportDataRepository
             try{
                 String fileName = "Interviewed_Candidates_" + todaysDate +".xlsx";
                 String directory = System.getProperty("java.io.tmpdir");
-                String filePath = directory+fileName;
+                String filePath = directory+"/"+fileName;
                 System.out.println(filePath);
                 FileOutputStream out = new FileOutputStream(new File(filePath));
                 workbook.write(out);
